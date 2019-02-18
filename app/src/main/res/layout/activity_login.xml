@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center_horizontal"
+    android:orientation="vertical">
+
+    <com.kyle.takeaway.view.TitleBar
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        app:title="登录" />
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="32dp"
+        android:layout_marginTop="128dp"
+        android:layout_marginRight="32dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="8dp"
+            android:text="手机号"
+            android:textSize="16sp" />
+
+        <EditText
+            android:id="@+id/edt_phone"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="请输入手机号"
+            android:inputType="number"
+            android:maxLines="1"
+            android:textSize="16sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="32dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginRight="32dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="8dp"
+            android:text="验证码"
+            android:textSize="16sp" />
+
+        <EditText
+            android:id="@+id/edt_code"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:hint="请输入验证码"
+            android:maxLines="1"
+            android:textSize="16sp" />
+
+        <android.support.v7.widget.AppCompatButton
+            android:id="@+id/btn_send_code"
+            android:layout_width="wrap_content"
+            android:layout_height="36dp"
+            android:background="@drawable/bg_btn"
+            android:clickable="true"
+            android:maxLines="1"
+            android:text="发送验证码"
+            android:textColor="@color/white" />
+    </LinearLayout>
+
+    <android.support.v7.widget.AppCompatButton
+        android:id="@+id/btn_login"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="32dp"
+        android:layout_marginTop="64dp"
+        android:layout_marginRight="32dp"
+        android:background="@drawable/bg_btn"
+        android:text="登录"
+        android:textColor="@color/white" />
+
+    <TextView
+        android:id="@+id/tv_reset_psw"
+        android:layout_width="wrap_content"
+        android:layout_height="32dp"
+        android:layout_marginTop="16dp"
+        android:gravity="center"
+        android:text="忘记密码"
+        android:textColor="@color/colorPrimary" />
+</LinearLayout>
