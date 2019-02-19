@@ -1,5 +1,6 @@
 package com.kyle.takeaway.framgent;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -13,8 +14,8 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.kyle.takeaway.R;
+import com.kyle.takeaway.activity.CommitOrderActivity;
 import com.kyle.takeaway.adapter.FeaturesAdapter;
-import com.kyle.takeaway.item.ItemCartProductViewModel;
 import com.kyle.takeaway.item.ItemCartViewModel;
 
 import butterknife.BindView;
@@ -90,5 +91,6 @@ public class CartFragment extends Fragment {
 
     @OnClick(R.id.tv_commit)
     public void onViewClicked() {
+        getContext().startActivity(new Intent(getActivity(), CommitOrderActivity.class));
     }
 }

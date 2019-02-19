@@ -12,14 +12,6 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <android.support.v7.widget.AppCompatButton
-        android:id="@+id/tv_add"
-        android:layout_width="32dp"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:text="+"
-        app:layout_constraintRight_toLeftOf="@id/tv_account"
-        app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/tv_account"
@@ -29,14 +21,7 @@
         android:paddingLeft="8dp"
         android:paddingRight="8dp"
         android:text="1"
-        app:layout_constraintRight_toLeftOf="@id/tv_less" />
+        app:layout_constraintRight_toRightOf="parent" />
 
-    <android.support.v7.widget.AppCompatButton
-        android:id="@+id/tv_less"
-        android:layout_width="32dp"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:text="-"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+
 </android.support.constraint.ConstraintLayout>

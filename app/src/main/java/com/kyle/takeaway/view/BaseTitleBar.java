@@ -9,6 +9,7 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
 import com.blankj.utilcode.util.ConvertUtils;
+import com.kyle.takeaway.R;
 
 
 /**
@@ -57,6 +58,7 @@ public abstract class BaseTitleBar extends FrameLayout {
     }
 
     private void initView() {
+        setBackgroundColor(getContext().getResources().getColor(R.color.white));
         leftView = initLeftView();
         righttView = initRightView();
         centerView = initCenterView();

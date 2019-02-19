@@ -160,9 +160,11 @@ public class TitleBar extends BaseTitleBar {
     }
 
     public static TextView getTextView(Context context, String content, @ColorRes int titleColor, int textsize, OnClickListener listener) {
+        int padding = ConvertUtils.dp2px(16);
         TextView text = new TextView(context);
         text.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT));
         text.setText(content);
+        text.setPadding(padding,padding,padding,padding);
         text.setGravity(Gravity.CENTER);
         text.setTextSize(TypedValue.COMPLEX_UNIT_SP, textsize);
         text.setTextColor(context.getResources().getColor(titleColor));
