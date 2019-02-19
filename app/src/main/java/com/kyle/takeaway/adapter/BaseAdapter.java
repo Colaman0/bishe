@@ -41,9 +41,9 @@ public class BaseAdapter<T extends BaseAdapter> extends RecyclerView.Adapter {
         mDatas.addAll(datas);
         mContext = context;
         if (mContext instanceof LifecycleOwner) {
-            mLifeCycle = ((LifecycleOwner) mContext).getLifecycle();
-        }
+        mLifeCycle = ((LifecycleOwner) mContext).getLifecycle();
     }
+}
 
     public T getThis() {
         return (T) this;

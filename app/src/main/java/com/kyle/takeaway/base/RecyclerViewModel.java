@@ -1,6 +1,7 @@
 package com.kyle.takeaway.base;
 
 import android.arch.lifecycle.Lifecycle;
+import android.content.Context;
 import android.view.View;
 
 import com.kyle.takeaway.common.imp.IDiffComparator;
@@ -12,12 +13,14 @@ import com.kyle.takeaway.common.imp.IDiffComparator;
 public abstract class RecyclerViewModel extends BaseViewModel implements IDiffComparator {
 
     private BaseViewHolder mHolder;
+    private Context mContext;
 
     public abstract int getLayoutRes();
 
     public void bindView(BaseViewHolder holder) {
         mHolder = holder;
         if (holder != null && holder.getConvertView() != null) {
+            setContext(holder.getContext());
             holder.getConvertView().setTag(this);
             onBindView(holder);
         }
@@ -58,5 +61,13 @@ public abstract class RecyclerViewModel extends BaseViewModel implements IDiffCo
 
     public void onItemClick() {
 
+    }
+
+    public Context getContext() {
+        return mContext;
+    }
+
+    public void setContext(Context context) {
+        mContext = context;
     }
 }

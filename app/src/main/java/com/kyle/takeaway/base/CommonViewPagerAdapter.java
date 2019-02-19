@@ -25,7 +25,7 @@ public class CommonViewPagerAdapter extends FragmentPagerAdapter {
     private final List<Fragment> mFragments = new ArrayList<>();
     private List<String> mTitles = new ArrayList<>();
 
-    public CommonViewPagerAdapter(FragmentManager fm, List<SupportFragment> fragments) {
+    public CommonViewPagerAdapter(FragmentManager fm, List<Fragment> fragments) {
         super(fm);
         mFragments.addAll(fragments);
     }

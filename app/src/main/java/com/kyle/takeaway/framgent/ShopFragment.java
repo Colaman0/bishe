@@ -3,6 +3,7 @@ package com.kyle.takeaway.framgent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
@@ -29,7 +30,7 @@ import me.yokeyword.fragmentation.SupportFragment;
  * Create by kyle on 2019/2/18
  * Function :
  */
-public class ShopFragment extends SupportFragment {
+public class ShopFragment extends Fragment {
 
     @BindView(R.id.recyclerview)
     RecyclerView recyclerview;
@@ -60,13 +61,13 @@ public class ShopFragment extends SupportFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View view = (View) LayoutInflater.from(getContext()).inflate(R.layout.include_shop_list, container, false);
         unbinder = ButterKnife.bind(this, view);
+        recyclerview = view.findViewById(R.id.recyclerview);
         return view;
     }
 
     @Override
     public void onDestroyView() {
         super.onDestroyView();
-        unbinder.unbind();
     }
 
     @Override
@@ -86,15 +87,9 @@ public class ShopFragment extends SupportFragment {
         for (int i = 0; i < 10; i++) {
             mAdapter.add(new ShopItemViewModel());
         }
-        mAdapter.diffNotifydatasetchanged();
     }
 
-    @Override
-    public void onLazyInitView(@Nullable Bundle savedInstanceState) {
-        super.onLazyInitView(savedInstanceState);
 
-
-    }
 
     @OnClick({R.id.ll_sell, R.id.ll_fee})
     public void onViewClicked(View view) {

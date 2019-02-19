@@ -18,6 +18,7 @@ import java.util.List;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.functions.Consumer;
 import io.reactivex.internal.functions.Functions;
 import io.reactivex.schedulers.Schedulers;
 
@@ -67,10 +68,9 @@ public class FeaturesAdapter extends ListAdapter<FeaturesAdapter> {
     public void diffNotifydatasetchanged() {
         // TODO: 2019/1/8 加入生命周期的监听 autodisposable
         Observable.just("")
-                .subscribeOn(Schedulers.computation())
-                .map(s -> DiffUtil.calculateDiff(getDiffCallback(), false))
                 .observeOn(AndroidSchedulers.mainThread())
-                .doOnNext(diffResult -> diffResult.dispatchUpdatesTo(FeaturesAdapter.this))
+                .map(s -> DiffUtil.calculateDiff(getDiffCallback(), false))
+                .doOnNext(diffResult -> getRecyclerView().post(() -> diffResult.dispatchUpdatesTo(FeaturesAdapter.this)))
                 .doOnComplete(() -> {
                     oldDatas.clear();
                     oldDatas.addAll(getDatas());

@@ -2,6 +2,7 @@ package com.kyle.takeaway.activity;
 
 import android.content.Intent;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
 import android.support.v4.view.ViewPager;
 
 import com.flyco.tablayout.CommonTabLayout;
@@ -10,6 +11,8 @@ import com.flyco.tablayout.listener.OnTabSelectListener;
 import com.kyle.takeaway.R;
 import com.kyle.takeaway.base.BaseActivity;
 import com.kyle.takeaway.base.CommonViewPagerAdapter;
+import com.kyle.takeaway.framgent.CartFragment;
+import com.kyle.takeaway.framgent.OrderFragment;
 import com.kyle.takeaway.framgent.ShopFragment;
 import com.kyle.takeaway.framgent.UserMineFragment;
 import com.zhihu.matisse.Matisse;
@@ -18,7 +21,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
-import me.yokeyword.fragmentation.SupportFragment;
 
 /**
  * <pre>
@@ -32,7 +34,7 @@ public class BottomTabActivity extends BaseActivity {
     ViewPager viewpager;
     @BindView(R.id.tab_layout)
     CommonTabLayout tabLayout;
-    private ArrayList<SupportFragment> mFragments = new ArrayList<>();
+    private ArrayList<Fragment> mFragments = new ArrayList<>();
 
 
     @Override
@@ -44,8 +46,8 @@ public class BottomTabActivity extends BaseActivity {
     @Override
     protected void initView() {
         mFragments.add(new ShopFragment());
-        mFragments.add(new UserMineFragment());
-        mFragments.add(new UserMineFragment());
+        mFragments.add(new OrderFragment());
+        mFragments.add(new CartFragment());
         mFragments.add(new UserMineFragment());
 
         ArrayList<CustomTabEntity> datas = new ArrayList<>();
@@ -84,7 +86,7 @@ public class BottomTabActivity extends BaseActivity {
         });
     }
 
-    private List<SupportFragment> getFragments() {
+    private List<Fragment> getFragments() {
         return mFragments;
     }
 

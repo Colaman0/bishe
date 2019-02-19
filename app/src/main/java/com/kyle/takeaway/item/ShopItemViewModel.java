@@ -22,11 +22,11 @@ public class ShopItemViewModel extends RecyclerViewModel {
     @Override
     public void bindView(BaseViewHolder holder) {
         super.bindView(holder);
-
+        holder.setText(R.id.tv_name, "店铺");
     }
 
     @Override
     public boolean isSameData(Object o) {
-        return false;
+        return true;
     }
 }
