@@ -1,19 +1,16 @@
 package com.kyle.takeaway.activity;
 
-import android.os.Bundle;
 import android.support.v7.widget.AppCompatButton;
 import android.view.View;
 import android.widget.EditText;
 
 import com.kyle.takeaway.R;
 import com.kyle.takeaway.base.BaseActivity;
-import com.kyle.takeaway.util.LoadingUtil;
 
 import java.util.Timer;
 import java.util.TimerTask;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
@@ -87,6 +84,6 @@ public class LoginActivity extends BaseActivity {
      * 开始登录操作
      */
     private void login() {
-        goToAcitivty(BottomTabActivity.class);
+        goToAcitivty(UserHomeActivity.class);
     }
 }

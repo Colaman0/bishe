@@ -1,18 +1,14 @@
 package com.kyle.takeaway.activity;
 
-import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.Log;
 
 import com.kyle.takeaway.R;
-import com.kyle.takeaway.adapter.BaseAdapter;
 import com.kyle.takeaway.adapter.FeaturesAdapter;
 import com.kyle.takeaway.base.BaseActivity;
-import com.kyle.takeaway.item.ShopItemViewModel;
+import com.kyle.takeaway.item.ItemCommentViewModel;
 
 import butterknife.BindView;
-import butterknife.ButterKnife;
 
 /**
  * <pre>
@@ -33,17 +29,11 @@ public class CommentListActivity extends BaseActivity {
 
     @Override
     protected void initView() {
-        mAdapter = new FeaturesAdapter(getContext())
-            ;
+        mAdapter = new FeaturesAdapter(getContext());
         recyclerview.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         recyclerview.setAdapter(mAdapter);
-
-        mAdapter.diffNotifydatasetchanged();
         for (int i = 0; i < 10; i++) {
-            mAdapter.add(new ShopItemViewModel());
+            mAdapter.add(new ItemCommentViewModel());
         }
     }
-
-
-
 }

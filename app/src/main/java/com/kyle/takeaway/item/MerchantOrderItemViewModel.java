@@ -1,17 +1,21 @@
 package com.kyle.takeaway.item;
 
 import android.content.Intent;
+import android.support.annotation.NonNull;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.TextView;
 
+import com.afollestad.materialdialogs.DialogAction;
+import com.afollestad.materialdialogs.MaterialDialog;
 import com.kyle.takeaway.R;
 import com.kyle.takeaway.activity.AddCommentActivity;
 import com.kyle.takeaway.activity.AddReturnActivity;
 import com.kyle.takeaway.adapter.FeaturesAdapter;
 import com.kyle.takeaway.base.BaseViewHolder;
 import com.kyle.takeaway.base.RecyclerViewModel;
+import com.kyle.takeaway.util.DialogUtil;
 
 import java.util.Arrays;
 import java.util.List;
@@ -27,29 +31,24 @@ import butterknife.OnClick;
  *     desc   :
  * </pre>
  */
-public class OrderItemViewModel extends RecyclerViewModel {
-    @BindView(R.id.tv_name)
-    TextView tvName;
-    @BindView(R.id.tv_status)
-    TextView tvStatus;
+public class MerchantOrderItemViewModel extends RecyclerViewModel {
+    @BindView(R.id.tv_address)
+    TextView tvAddress;
     @BindView(R.id.view_line)
     View viewLine;
     @BindView(R.id.recyclerview)
     RecyclerView recyclerview;
-    @BindView(R.id.tv_comment)
-    TextView tvComment;
-    @BindView(R.id.tv_return)
-    TextView tvReturn;
+
 
     @Override
     public int getLayoutRes() {
-        return R.layout.item_order;
+        return R.layout.item_merchant_order;
     }
 
     @Override
     protected void onBindView(BaseViewHolder holder) {
         ButterKnife.bind(this, holder.getConvertView());
-        holder.setText(R.id.tv_name, "店铺");
+        holder.setText(R.id.tv_address, "地址");
         RecyclerView recyclerView = holder.getView(R.id.recyclerview);
         recyclerView.setLayoutManager(new LinearLayoutManager(holder.getContext()));
         FeaturesAdapter adapter = new FeaturesAdapter(holder.getContext());
@@ -66,15 +65,13 @@ public class OrderItemViewModel extends RecyclerViewModel {
         return false;
     }
 
-    @OnClick({R.id.tv_comment, R.id.tv_return})
+    @OnClick(R.id.tv_ship)
     public void onViewClicked(View view) {
-        switch (view.getId()) {
-            case R.id.tv_comment:
-                getContext().startActivity(new Intent(getContext(), AddCommentActivity.class));
-                break;
-            case R.id.tv_return:
-                getContext().startActivity(new Intent(getContext(), AddReturnActivity.class));
-                break;
-        }
+        DialogUtil.getSureTipsDialog(getContext(), "确认订单已送出?", new MaterialDialog.SingleButtonCallback() {
+            @Override
+            public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
+
+            }
+        }).show();
     }
 }

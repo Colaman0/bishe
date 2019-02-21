@@ -1,5 +1,6 @@
 package com.kyle.takeaway.framgent;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -16,6 +17,7 @@ import android.widget.TextView;
 
 import com.blankj.utilcode.util.ToastUtils;
 import com.kyle.takeaway.R;
+import com.kyle.takeaway.activity.ShopDetailActivity;
 import com.kyle.takeaway.adapter.FeaturesAdapter;
 import com.kyle.takeaway.item.ShopItemViewModel;
 import com.kyle.takeaway.view.TitleBar;
@@ -73,15 +75,17 @@ public class ShopFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        titleBar.addViewToRight(TitleBar.getIconView(getContext(), R.mipmap.ic_search, new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                ToastUtils.showShort("搜索");
-            }
-        }));
+        titleBar
+                .setBackIconVisible(false)
+                .addViewToRight(TitleBar.getIconView(getContext(), R.mipmap.ic_search, new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        ToastUtils.showShort("搜索");
+                    }
+                }));
         mAdapter = new FeaturesAdapter(getActivity())
                 .bindRecyclerView(recyclerview)
-                .addItemClickListener((position, itemView) -> Log.d("cola", "position = " + position));
+                .addItemClickListener((position, itemView) -> gotoDetail());
         recyclerview.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         recyclerview.setAdapter(mAdapter);
         for (int i = 0; i < 10; i++) {
@@ -89,6 +93,10 @@ public class ShopFragment extends Fragment {
         }
     }
 
+    private void gotoDetail() {
+        Intent intent = new Intent(getContext(), ShopDetailActivity.class);
+        getContext().startActivity(intent);
+    }
 
 
     @OnClick({R.id.ll_sell, R.id.ll_fee})

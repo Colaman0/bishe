@@ -13,6 +13,7 @@ import com.kyle.takeaway.base.BaseViewHolder;
 import com.kyle.takeaway.base.RecyclerViewModel;
 import com.kyle.takeaway.common.imp.OnItemClickListener;
 import com.kyle.takeaway.common.param.BaseViewHolderBuilder;
+import com.kyle.takeaway.utils.GlideImageLoader;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -41,9 +42,9 @@ public class BaseAdapter<T extends BaseAdapter> extends RecyclerView.Adapter {
         mDatas.addAll(datas);
         mContext = context;
         if (mContext instanceof LifecycleOwner) {
-        mLifeCycle = ((LifecycleOwner) mContext).getLifecycle();
+            mLifeCycle = ((LifecycleOwner) mContext).getLifecycle();
+        }
     }
-}
 
     public T getThis() {
         return (T) this;
@@ -93,6 +94,7 @@ public class BaseAdapter<T extends BaseAdapter> extends RecyclerView.Adapter {
 
     protected BaseViewHolderBuilder getDefaultBuilder(Context context, ViewGroup viewGroup, int itemType) {
         return new BaseViewHolderBuilder(context, viewGroup, itemType)
+                .setImageLoader(GlideImageLoader.getInstance())
                 .setItemClickConsumer(getClickConsumer());
     }
 

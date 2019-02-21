@@ -29,17 +29,20 @@ import butterknife.BindView;
  *     desc   :
  * </pre>
  */
-public class BottomTabActivity extends BaseActivity {
+public class UserHomeActivity extends BaseActivity {
     @BindView(R.id.viewpager)
     ViewPager viewpager;
     @BindView(R.id.tab_layout)
     CommonTabLayout tabLayout;
     private ArrayList<Fragment> mFragments = new ArrayList<>();
 
+    private String test = "";
+    private boolean a;
+    private boolean b;
 
     @Override
     protected int initLayoutRes() {
-        return R.layout.activity_user_home;
+        return R.layout.activity_home;
     }
 
 
@@ -96,7 +99,6 @@ public class BottomTabActivity extends BaseActivity {
         if (resultCode == RESULT_OK) {
             String photo = Matisse.obtainPathResult(data).get(0);
             ((UserMineFragment) mFragments.get(3)).setPhoto(photo);
-
         }
     }
 }

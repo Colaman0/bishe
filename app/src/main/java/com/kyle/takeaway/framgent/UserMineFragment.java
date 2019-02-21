@@ -12,6 +12,7 @@ import android.widget.TextView;
 
 import com.kyle.takeaway.R;
 import com.kyle.takeaway.activity.AddressActivity;
+import com.kyle.takeaway.activity.CommentListActivity;
 import com.kyle.takeaway.activity.UserInfoActivity;
 import com.kyle.takeaway.utils.GlideImageLoader;
 import com.kyle.takeaway.utils.PhotoPickerUtil;
@@ -77,6 +78,7 @@ public class UserMineFragment extends SupportFragment {
                 getContext().startActivity(new Intent(getActivity(), AddressActivity.class));
                 break;
             case R.id.tv_comment:
+                getContext().startActivity(new Intent(getActivity(), CommentListActivity.class));
                 break;
         }
     }

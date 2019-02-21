@@ -39,6 +39,8 @@ public class TitleBar extends BaseTitleBar {
     private LinearLayout mRightLayout;
     private LinearLayout mCenterLayout;
 
+    private ImageView mImageView;
+
 
     public TitleBar(Context context) {
         this(context, null);
@@ -104,17 +106,17 @@ public class TitleBar extends BaseTitleBar {
 
     private ImageView getBackIcon() {
         int padding = ConvertUtils.dp2px(16);
-        ImageView imageView = new ImageView(getContext());
-        imageView.setImageResource(mBackIconRes);
-        imageView.setPadding(padding, padding, padding, padding);
-        imageView.setOnClickListener(v -> {
+        mImageView =new ImageView(getContext());
+        mImageView.setImageResource(mBackIconRes);
+        mImageView.setPadding(padding, padding, padding, padding);
+        mImageView.setOnClickListener(v -> {
             if (getContext() instanceof Activity) {
                 ((Activity) getContext()).finish();
             }
         });
-        imageView.setLayoutParams(new LinearLayout.LayoutParams(ConvertUtils.dp2px(50f), ViewGroup.LayoutParams.MATCH_PARENT));
-        imageView.setBackground(getRippleDrawable(getContext()));
-        return imageView;
+        mImageView.setLayoutParams(new LinearLayout.LayoutParams(ConvertUtils.dp2px(50f), ViewGroup.LayoutParams.MATCH_PARENT));
+        mImageView.setBackground(getRippleDrawable(getContext()));
+        return mImageView;
     }
 
     public LinearLayout getLeftLayout() {
@@ -164,7 +166,7 @@ public class TitleBar extends BaseTitleBar {
         TextView text = new TextView(context);
         text.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.MATCH_PARENT));
         text.setText(content);
-        text.setPadding(padding,padding,padding,padding);
+        text.setPadding(padding, padding, padding, padding);
         text.setGravity(Gravity.CENTER);
         text.setTextSize(TypedValue.COMPLEX_UNIT_SP, textsize);
         text.setTextColor(context.getResources().getColor(titleColor));
@@ -181,6 +183,13 @@ public class TitleBar extends BaseTitleBar {
         Drawable drawable = typedArray.getDrawable(0);
         typedArray.recycle();
         return drawable.getConstantState().newDrawable();
+    }
+
+    public TitleBar setBackIconVisible(boolean visible) {
+        if (mImageView != null) {
+            mImageView.setVisibility(visible ? VISIBLE : GONE);
+        }
+        return this;
     }
 }
 

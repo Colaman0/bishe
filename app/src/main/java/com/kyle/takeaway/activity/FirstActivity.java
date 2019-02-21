@@ -1,7 +1,6 @@
 package com.kyle.takeaway.activity;
 
 import com.blankj.utilcode.util.ScreenUtils;
-import com.blankj.utilcode.util.TimeUtils;
 import com.kyle.takeaway.R;
 import com.kyle.takeaway.base.BaseActivity;
 
@@ -27,7 +26,7 @@ public class FirstActivity extends BaseActivity {
         TimerTask timerTask = new TimerTask() {
             @Override
             public void run() {
-                goToAcitivty(BottomTabActivity.class);
+                goToAcitivty(UserHomeActivity.class);
             }
         };
         new Timer().schedule(timerTask, 2*1000 );
