@@ -27,10 +27,20 @@ public interface RetrofitService {
     @FormUrlEncoded
     public Observable<BaseResponse> getRegisterCode(@Field("mobile_phone") String phone, @Field("type") int type);
 
+    @POST(Constants.GET_RESETPSW_CODE)
+    @FormUrlEncoded
+    public Observable<BaseResponse> getResetCode(@Field("mobile_phone") String phone, @Field("type") int type);
 
     @POST(Constants.REGISTER)
     @FormUrlEncoded
     public Observable<BaseResponse> register(@Field("nickname") String nickname, @Field("mobile_phone") String mobile_phone,
                                              @Field("password") String password, @Field("verify_code") String verify_code,
                                              @Field("type") int type);
+
+
+    @POST(Constants.REGISTER)
+    @FormUrlEncoded
+    public Observable<BaseResponse> resetPassword(@Field("mobile_phone") String mobile_phone,
+                                                  @Field("password") String password, @Field("verify_code") String verify_code,
+                                                  @Field("type") int type);
 }

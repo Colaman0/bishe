@@ -1,12 +1,16 @@
 package com.kyle.takeaway.activity;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.v7.widget.AppCompatButton;
 import android.view.View;
 import android.widget.EditText;
 
+import com.blankj.utilcode.util.ToastUtils;
 import com.kyle.takeaway.R;
+import com.kyle.takeaway.RetrofitManager;
 import com.kyle.takeaway.base.BaseActivity;
+import com.kyle.takeaway.util.UserHelper;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -14,6 +18,8 @@ import java.util.TimerTask;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import io.reactivex.functions.Consumer;
+import io.reactivex.internal.functions.Functions;
 
 /**
  * Create by kyle on 2019/2/17
@@ -43,12 +49,19 @@ public class ResetPswActivity extends BaseActivity {
 
     }
 
+    @SuppressLint("CheckResult")
     @OnClick({R.id.btn_send_code, R.id.btn_commit})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.btn_send_code:
-                countDown();
-                btnSendCode.setClickable(false);
+                if (edtPhone.getText().toString().length() < 1) {
+                    ToastUtils.showShort("请填写手机号");
+                } else {
+                    RetrofitManager.getInstance().getResetCode(edtPhone.getText().toString(), UserHelper.getAccountType())
+                            .doOnNext(o -> countDown())
+                            .subscribe(Functions.emptyConsumer(), com.kyle.takeaway.base.Functions.throwables());
+                    ;
+                }
                 break;
             case R.id.btn_commit:
                 commit();
@@ -61,20 +74,18 @@ public class ResetPswActivity extends BaseActivity {
      */
     private void countDown() {
         btnSendCode.setText(countdownTime + "s");
+        btnSendCode.setClickable(false);
         final Timer timer = new Timer();
         timer.schedule(new TimerTask() {
             @Override
             public void run() {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        countdownTime--;
-                        btnSendCode.setText(countdownTime + "s");
-                        if (countdownTime == 0) {
-                            timer.cancel();
-                            btnSendCode.setText("发送验证码");
-                            btnSendCode.setClickable(true);
-                        }
+                runOnUiThread(() -> {
+                    countdownTime--;
+                    btnSendCode.setText(countdownTime + "s");
+                    if (countdownTime == 0) {
+                        timer.cancel();
+                        btnSendCode.setText("发送验证码");
+                        btnSendCode.setClickable(true);
                     }
                 });
             }
@@ -82,6 +93,16 @@ public class ResetPswActivity extends BaseActivity {
     }
 
     private void commit() {
-        finish();
+        if (edtPhone.getText().toString().length() < 1 || edtPsw.getText().toString().length() < 1 || edtCode.getText().toString().length() < 1) {
+            ToastUtils.showShort("请完善信息");
+            return;
+        }
+        RetrofitManager.getInstance().resetPsw(edtPhone.getText().toString(), edtPsw.getText().toString(), edtCode.getText().toString()
+                , UserHelper.getAccountType())
+                .doOnNext(o -> {
+                    goToAcitivty(LoginActivity.class);
+                    finish();
+                })
+                .subscribe(Functions.emptyConsumer(), com.kyle.takeaway.base.Functions.throwables());
     }
 }

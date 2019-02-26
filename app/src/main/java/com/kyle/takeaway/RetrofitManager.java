@@ -69,8 +69,20 @@ public class RetrofitManager {
                 .observeOn(AndroidSchedulers.mainThread());
     }
 
+    public Observable getResetCode(String phone, int type) {
+        return service.getResetCode(phone, type)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
     public Observable register(String nickName, String mobile_phone, String password, String verify_code, int type) {
         return service.register(nickName, mobile_phone, password, verify_code, type)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    public Observable resetPsw(String mobile_phone, String password, String verify_code, int type) {
+        return service.resetPassword(mobile_phone, password, verify_code, type)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }
