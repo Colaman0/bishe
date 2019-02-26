@@ -41,11 +41,7 @@ dependencies {
     implementation 'com.yanzhenjie:permission:2.0.0-rc12'
     // util
     implementation 'com.blankj:utilcode:1.22.4'
-    // retrofit
-    implementation 'com.squareup.retrofit2:retrofit:2.4.0'
-    implementation 'com.squareup.retrofit2:converter-gson:2.1.0'
-    // okhttp
-    implementation 'com.squareup.okhttp3:okhttp:3.11.0'
+
     // fragment
     implementation 'me.yokeyword:fragmentation:1.3.6'
     implementation 'com.afollestad.material-dialogs:commons:0.9.4.1'
@@ -57,6 +53,14 @@ dependencies {
     // rxjava
     implementation 'io.reactivex.rxjava2:rxjava:2.2.1'
     implementation 'io.reactivex.rxjava2:rxandroid:2.1.0'
+    compile 'com.squareup.retrofit2:retrofit:2.4.0' // retrofit
+    compile 'com.google.code.gson:gson:2.5' // gson
+    compile 'com.squareup.retrofit2:converter-gson:2.4.0'
+    compile 'com.squareup.okhttp3:logging-interceptor:3.4.1'
+    compile 'com.squareup.okhttp3:okhttp:3.4.1'
+    compile 'com.squareup.retrofit2:adapter-rxjava2:2.4.0'//配合Rxjava 使用
+
+
 
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
     testImplementation 'junit:junit:4.12'

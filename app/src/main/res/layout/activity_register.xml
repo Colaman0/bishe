@@ -5,18 +5,10 @@
     android:gravity="center"
     android:orientation="vertical">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="外卖平台"
-        android:textColor="@color/colorPrimaryDark"
-        android:textSize="20sp" />
-
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="32dp"
-        android:layout_marginTop="64dp"
         android:layout_marginRight="32dp"
         android:orientation="horizontal">
 
@@ -32,6 +24,56 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="请输入手机号"
+            android:inputType="number"
+            android:maxLines="1"
+            android:textSize="16sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="32dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginRight="32dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="8dp"
+            android:text="昵    称"
+            android:textSize="16sp" />
+
+        <EditText
+            android:id="@+id/edt_nick_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="请输入昵称"
+            android:inputType="number"
+            android:maxLines="1"
+            android:textSize="16sp" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="32dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginRight="32dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="8dp"
+            android:text="密   码"
+            android:textSize="16sp" />
+
+        <EditText
+            android:id="@+id/edt_psw"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="请输入密码"
             android:inputType="number"
             android:maxLines="1"
             android:textSize="16sp" />
@@ -70,6 +112,13 @@
             android:textColor="@color/white" />
     </LinearLayout>
 
+    <CheckBox
+        android:id="@+id/checkbox"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="商家用户" />
+
     <android.support.v7.widget.AppCompatButton
         android:id="@+id/btn_register"
         android:layout_width="match_parent"
@@ -80,4 +129,14 @@
         android:background="@drawable/bg_btn"
         android:text="注册"
         android:textColor="@color/white" />
+
+    <TextView
+        android:id="@+id/tv_login"
+        android:layout_marginTop="4dp"
+        android:padding="8dp"
+        android:textColor="@color/colorPrimary"
+        android:gravity="center"
+        android:text="直接登录"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
 </LinearLayout>

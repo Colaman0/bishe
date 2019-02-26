@@ -1,16 +1,20 @@
 package com.kyle.takeaway.activity;
 
+import android.os.Bundle;
 import android.support.v7.widget.AppCompatButton;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.kyle.takeaway.R;
+import com.kyle.takeaway.RetrofitManager;
 import com.kyle.takeaway.base.BaseActivity;
-
-import java.util.Timer;
-import java.util.TimerTask;
+import com.kyle.takeaway.base.Functions;
+import com.kyle.takeaway.view.TitleBar;
 
 import butterknife.BindView;
+import butterknife.ButterKnife;
 import butterknife.OnClick;
 
 /**
@@ -22,12 +26,16 @@ public class LoginActivity extends BaseActivity {
     EditText edtPhone;
     @BindView(R.id.edt_code)
     EditText edtCode;
-    @BindView(R.id.btn_send_code)
-    AppCompatButton btnSendCode;
 
     int countdownTime = 60;
     @BindView(R.id.btn_login)
     AppCompatButton btnLogin;
+    @BindView(R.id.checkbox)
+    CheckBox checkbox;
+    @BindView(R.id.tv_reset_psw)
+    TextView tvResetPsw;
+    @BindView(R.id.title_bar)
+    TitleBar titleBar;
 
     @Override
     protected int initLayoutRes() {
@@ -39,43 +47,22 @@ public class LoginActivity extends BaseActivity {
 
     }
 
-    /**
-     * 开始倒计时60s
-     */
-    private void countDown() {
-        btnSendCode.setText(countdownTime + "s");
-        final Timer timer = new Timer();
-        timer.schedule(new TimerTask() {
-            @Override
-            public void run() {
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        countdownTime--;
-                        btnSendCode.setText(countdownTime + "s");
-                        if (countdownTime == 0) {
-                            timer.cancel();
-                            btnSendCode.setText("发送验证码");
-                            btnSendCode.setClickable(true);
-                        }
-                    }
-                });
-            }
-        }, 0,1000);
-    }
 
-    @OnClick({R.id.btn_send_code, R.id.btn_login, R.id.tv_reset_psw})
+    @OnClick({R.id.btn_login, R.id.tv_reset_psw,R.id.tv_register})
     public void onViewClicked(View view) {
         switch (view.getId()) {
-            case R.id.btn_send_code:
-                countDown();
-                btnSendCode.setClickable(false);
-                break;
             case R.id.btn_login:
-                login();
+                if (checkbox.isChecked()) {
+                    storeLogin();
+                } else {
+                    userLogin();
+                }
                 break;
             case R.id.tv_reset_psw:
                 goToAcitivty(ResetPswActivity.class);
+                break;
+            case R.id.tv_register:
+                goToAcitivty(RegisterActivity.class);
                 break;
         }
     }
@@ -83,7 +70,40 @@ public class LoginActivity extends BaseActivity {
     /**
      * 开始登录操作
      */
-    private void login() {
-        goToAcitivty(UserHomeActivity.class);
+    private void userLogin() {
+        RetrofitManager.getInstance().userLogin(edtPhone.getText().toString(), edtCode.getText().toString())
+                .doOnNext(s -> {
+                    if (checkbox.isChecked()) {
+                        goToAcitivty(MerchantHomeActivity.class);
+                    } else {
+                        goToAcitivty(UserHomeActivity.class);
+                    }
+                })
+                .subscribe(Functions.empty(), Functions.throwables());
+    }
+
+    private void storeLogin() {
+        RetrofitManager.getInstance().storeLogin(edtPhone.getText().toString(), edtCode.getText().toString())
+                .doOnNext(s -> {
+                    if (checkbox.isChecked()) {
+                        goToAcitivty(MerchantHomeActivity.class);
+                    } else {
+                        goToAcitivty(UserHomeActivity.class);
+                    }
+                })
+                .subscribe(Functions.empty(), Functions.throwables());
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // TODO: add setContentView(...) invocation
+        ButterKnife.bind(this);
+        titleBar.setBackIconVisible(false);
+    }
+
+    @OnClick(R.id.tv_reset_psw)
+    public void onViewClicked() {
+        goToAcitivty(ResetPswActivity.class        );
     }
 }
