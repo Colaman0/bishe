@@ -135,6 +135,10 @@ public class BaseAdapter<T extends BaseAdapter> extends RecyclerView.Adapter {
         mDatas.remove(viewModel);
     }
 
+    public void remove(List<RecyclerViewModel> viewModels) {
+        mDatas.removeAll(viewModels);
+    }
+
     public Lifecycle getLifeCycle() {
         return mLifeCycle;
     }

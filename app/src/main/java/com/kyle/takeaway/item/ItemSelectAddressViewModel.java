@@ -11,28 +11,30 @@ import com.kyle.takeaway.entity.AddressEntity;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import io.reactivex.functions.Consumer;
 
 /**
  * Create by kyle on 2019/2/19
  * Function :
  */
-public class ItemAddressViewModel extends RecyclerViewModel {
+public class ItemSelectAddressViewModel extends RecyclerViewModel {
 
     private final AddressEntity mAddressEntity;
-    @BindView(R.id.checkbox)
-    CheckBox checkbox;
+    private final Consumer<Integer> mConsumer;
+
     @BindView(R.id.tv_address)
     TextView tvAddress;
 
     private boolean isSelect = false;
 
-    public ItemAddressViewModel(AddressEntity addressEntity) {
+    public ItemSelectAddressViewModel(AddressEntity addressEntity, Consumer<Integer> consumer) {
+        mConsumer = consumer;
         mAddressEntity = addressEntity;
     }
 
     @Override
     public int getLayoutRes() {
-        return R.layout.item_address;
+        return R.layout.item_select_address;
     }
 
     @Override
@@ -46,9 +48,13 @@ public class ItemAddressViewModel extends RecyclerViewModel {
         return false;
     }
 
-    @OnClick(R.id.checkbox)
+    @OnClick(R.id.root_view)
     public void onViewClicked() {
-        checkbox.setChecked(isSelect = !isSelect);
+        try {
+            mConsumer.accept(mAddressEntity.getAddress_id());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     public boolean getIsSelect() {

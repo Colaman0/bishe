@@ -12,6 +12,7 @@ import com.bumptech.glide.request.FutureTarget;
 import com.bumptech.glide.request.RequestOptions;
 import com.kyle.takeaway.base.IImageLoad;
 
+import java.net.URL;
 import java.util.concurrent.Future;
 
 
@@ -78,6 +79,10 @@ public class GlideImageLoader implements IImageLoad {
     @Override
     public void loadImage(Context context, String url, ImageView imageView) {
         loadImage(context, url, imageView, getDefaultOptions());
+    }
+
+    public void loadImage(Context context, URL url, ImageView imageView) {
+        Glide.with(context).load(url).apply(getDefaultOptions()).into(imageView);
     }
 
     /**

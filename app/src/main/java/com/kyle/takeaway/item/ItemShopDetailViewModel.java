@@ -11,6 +11,7 @@ import com.afollestad.materialdialogs.MaterialDialog;
 import com.kyle.takeaway.R;
 import com.kyle.takeaway.base.BaseViewHolder;
 import com.kyle.takeaway.base.RecyclerViewModel;
+import com.kyle.takeaway.entity.ProductEntity;
 import com.kyle.takeaway.util.DialogUtil;
 
 import butterknife.BindView;
@@ -25,6 +26,7 @@ import butterknife.OnClick;
  * </pre>
  */
 public class ItemShopDetailViewModel extends RecyclerViewModel {
+    private final ProductEntity mProductEntity;
     @BindView(R.id.iv_pic)
     ImageView ivPic;
     @BindView(R.id.tv_name)
@@ -40,6 +42,10 @@ public class ItemShopDetailViewModel extends RecyclerViewModel {
 
     private int num;
 
+    public ItemShopDetailViewModel(ProductEntity productEntity) {
+        mProductEntity = productEntity;
+    }
+
     @Override
     public int getLayoutRes() {
         return R.layout.item_shop_detail;
@@ -48,10 +54,9 @@ public class ItemShopDetailViewModel extends RecyclerViewModel {
     @Override
     protected void onBindView(BaseViewHolder holder) {
         ButterKnife.bind(this, holder.getConvertView());
-        holder.loadDrawable(R.id.iv_pic, R.mipmap.ic_launcher);
-        holder.setText(R.id.tv_name, "店铺");
-        holder.setText(R.id.tv_detail, "详情");
-        String name="";
+        holder.loadImage(R.id.iv_pic, mProductEntity.getCover_url());
+        holder.setText(R.id.tv_name, mProductEntity.getFood_name());
+        holder.setText(R.id.tv_detail, mProductEntity.getDescription());
     }
 
     @Override

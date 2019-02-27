@@ -11,6 +11,7 @@ import com.kyle.takeaway.R;
 import com.kyle.takeaway.RetrofitManager;
 import com.kyle.takeaway.base.BaseActivity;
 import com.kyle.takeaway.base.Functions;
+import com.kyle.takeaway.util.UserHelper;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -70,6 +71,7 @@ public class RegisterActivity extends BaseActivity {
                         if (countdownTime == 0) {
                             timer.cancel();
                             btnSendCode.setText("发送验证码");
+                            countdownTime = 60;
                             btnSendCode.setClickable(true);
                         }
                     }
@@ -116,11 +118,8 @@ public class RegisterActivity extends BaseActivity {
                 edtPsw.getText().toString(),
                 edtCode.getText().toString(), checkbox.isChecked() ? 2 : 1)
                 .doOnNext(o -> {
-                    if (checkbox.isChecked()) {
-                        goToAcitivty(MerchantHomeActivity.class);
-                    } else {
-                        goToAcitivty(UserHomeActivity.class);
-                    }
+                    goToAcitivty(LoginActivity.class);
+                    finish();
                 })
                 .subscribe(Functions.empty(), Functions.throwables());
     }

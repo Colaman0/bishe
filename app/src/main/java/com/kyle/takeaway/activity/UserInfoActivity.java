@@ -7,6 +7,7 @@ import android.widget.TextView;
 
 import com.kyle.takeaway.R;
 import com.kyle.takeaway.base.BaseActivity;
+import com.kyle.takeaway.util.UserHelper;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -35,7 +36,7 @@ public class UserInfoActivity extends BaseActivity {
 
     @Override
     protected void initView() {
-        tvName.setText("用户名 ：" + getIntent().getStringExtra("name"));
+        tvName.setText("用户名 ：" + UserHelper.getUserInfo().getNickname());
     }
 
     @OnClick({R.id.tv_change, R.id.tv_reset})

@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.v7.widget.AppCompatButton;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.EditText;
 
 import com.blankj.utilcode.util.ToastUtils;
@@ -18,7 +19,6 @@ import java.util.TimerTask;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import io.reactivex.functions.Consumer;
 import io.reactivex.internal.functions.Functions;
 
 /**
@@ -36,8 +36,11 @@ public class ResetPswActivity extends BaseActivity {
     EditText edtPsw;
     @BindView(R.id.btn_commit)
     AppCompatButton btnCommit;
+    @BindView(R.id.checkbox)
+    CheckBox checkbox;
 
     private int countdownTime = 60;
+    private int accountType;
 
     @Override
     protected int initLayoutRes() {
@@ -46,7 +49,7 @@ public class ResetPswActivity extends BaseActivity {
 
     @Override
     protected void initView() {
-
+        checkbox.setVisibility(UserHelper.isInit() ? View.GONE : View.VISIBLE);
     }
 
     @SuppressLint("CheckResult")
@@ -57,7 +60,8 @@ public class ResetPswActivity extends BaseActivity {
                 if (edtPhone.getText().toString().length() < 1) {
                     ToastUtils.showShort("请填写手机号");
                 } else {
-                    RetrofitManager.getInstance().getResetCode(edtPhone.getText().toString(), UserHelper.getAccountType())
+                    RetrofitManager.getInstance().getResetCode(edtPhone.getText().toString(),
+                            UserHelper.isInit() ? UserHelper.getAccountType() : checkbox.isChecked() ? 2 : 1)
                             .doOnNext(o -> countDown())
                             .subscribe(Functions.emptyConsumer(), com.kyle.takeaway.base.Functions.throwables());
                     ;
@@ -86,6 +90,7 @@ public class ResetPswActivity extends BaseActivity {
                         timer.cancel();
                         btnSendCode.setText("发送验证码");
                         btnSendCode.setClickable(true);
+                        countdownTime = 60;
                     }
                 });
             }
@@ -97,12 +102,19 @@ public class ResetPswActivity extends BaseActivity {
             ToastUtils.showShort("请完善信息");
             return;
         }
-        RetrofitManager.getInstance().resetPsw(edtPhone.getText().toString(), edtPsw.getText().toString(), edtCode.getText().toString()
-                , UserHelper.getAccountType())
+        RetrofitManager.getInstance().resetPsw(edtPhone.getText().toString(), edtPsw.getText().toString(), edtCode.getText().toString(),
+                UserHelper.isInit() ? UserHelper.getAccountType() : checkbox.isChecked() ? 2 : 1)
                 .doOnNext(o -> {
                     goToAcitivty(LoginActivity.class);
                     finish();
                 })
                 .subscribe(Functions.emptyConsumer(), com.kyle.takeaway.base.Functions.throwables());
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // TODO: add setContentView(...) invocation
+        ButterKnife.bind(this);
     }
 }

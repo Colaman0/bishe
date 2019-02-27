@@ -1,7 +1,10 @@
 package com.kyle.takeaway;
 
+import com.google.common.base.Optional;
 import com.kyle.takeaway.entity.BaseResponse;
 
+
+import io.reactivex.Observable;
 import io.reactivex.ObservableTransformer;
 
 /**
@@ -9,12 +12,12 @@ import io.reactivex.ObservableTransformer;
  * Function :
  */
 public class RxResponse {
-    public static <T> ObservableTransformer<BaseResponse<T>, T> getData() {
+    public static <T> ObservableTransformer<BaseResponse<T>, Optional<T>> getData() {
         return response -> response.map(tBaseResponse -> {
             if (tBaseResponse == null || tBaseResponse.getCode() != 0) {
                 throw new RuntimeException(tBaseResponse.getMsg());
             }
-            return tBaseResponse.getData();
+            return Optional.fromNullable(tBaseResponse.getData());
         });
     }
 }

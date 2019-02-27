@@ -59,8 +59,7 @@ dependencies {
     compile 'com.squareup.okhttp3:logging-interceptor:3.4.1'
     compile 'com.squareup.okhttp3:okhttp:3.4.1'
     compile 'com.squareup.retrofit2:adapter-rxjava2:2.4.0'//配合Rxjava 使用
-
-
+    api 'com.google.guava:guava:27.0.1-android'
 
     annotationProcessor 'com.jakewharton:butterknife-compiler:8.8.1'
     testImplementation 'junit:junit:4.12'

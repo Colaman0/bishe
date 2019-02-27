@@ -11,6 +11,7 @@ import com.kyle.takeaway.R;
 import com.kyle.takeaway.RetrofitManager;
 import com.kyle.takeaway.base.BaseActivity;
 import com.kyle.takeaway.base.Functions;
+import com.kyle.takeaway.util.UserHelper;
 import com.kyle.takeaway.view.TitleBar;
 
 import butterknife.BindView;
@@ -73,6 +74,7 @@ public class LoginActivity extends BaseActivity {
     private void userLogin() {
         RetrofitManager.getInstance().userLogin(edtPhone.getText().toString(), edtCode.getText().toString())
                 .doOnNext(s -> {
+                    UserHelper.setUserInfo(true,s.get().getUserId());
                     if (checkbox.isChecked()) {
                         goToAcitivty(MerchantHomeActivity.class);
                     } else {
@@ -85,6 +87,7 @@ public class LoginActivity extends BaseActivity {
     private void storeLogin() {
         RetrofitManager.getInstance().storeLogin(edtPhone.getText().toString(), edtCode.getText().toString())
                 .doOnNext(s -> {
+                    UserHelper.setUserInfo(false,s.get().getUserId());
                     if (checkbox.isChecked()) {
                         goToAcitivty(MerchantHomeActivity.class);
                     } else {

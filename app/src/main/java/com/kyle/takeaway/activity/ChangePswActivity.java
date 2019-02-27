@@ -6,8 +6,11 @@ import android.view.View;
 import android.widget.EditText;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.ToastUtils;
 import com.kyle.takeaway.R;
+import com.kyle.takeaway.RetrofitManager;
 import com.kyle.takeaway.base.BaseActivity;
+import com.kyle.takeaway.util.UserHelper;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -38,6 +41,7 @@ public class ChangePswActivity extends BaseActivity {
     @Override
     protected void initView() {
 
+
     }
 
 
@@ -45,11 +49,19 @@ public class ChangePswActivity extends BaseActivity {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.btn_commit:
-
+                commit();
                 break;
             case R.id.tv_reset_psw:
                 goToAcitivty(ResetPswActivity.class);
                 break;
+        }
+    }
+
+    private void commit() {
+        if (edtCode.getText().toString().length() < 1 || edtPhone.getText().toString().length() < 1) {
+            ToastUtils.showShort("请完善密码");
+        } else {
+            RetrofitManager.getInstance().changePsw(edtPhone.getText().toString(), edtCode.getText().toString());
         }
     }
 }

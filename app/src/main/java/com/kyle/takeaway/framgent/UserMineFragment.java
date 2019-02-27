@@ -1,5 +1,6 @@
 package com.kyle.takeaway.framgent;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -10,10 +11,15 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.ToastUtils;
+import com.google.common.base.Optional;
 import com.kyle.takeaway.R;
+import com.kyle.takeaway.RetrofitManager;
 import com.kyle.takeaway.activity.AddressActivity;
 import com.kyle.takeaway.activity.CommentListActivity;
 import com.kyle.takeaway.activity.UserInfoActivity;
+import com.kyle.takeaway.entity.UserInfoEntity;
+import com.kyle.takeaway.util.UserHelper;
 import com.kyle.takeaway.utils.GlideImageLoader;
 import com.kyle.takeaway.utils.PhotoPickerUtil;
 import com.zhihu.matisse.MimeType;
@@ -22,6 +28,10 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+import io.reactivex.ObservableSource;
+import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Function;
+import io.reactivex.internal.functions.Functions;
 import me.yokeyword.fragmentation.SupportFragment;
 
 /**
@@ -50,11 +60,22 @@ public class UserMineFragment extends SupportFragment {
         return view;
     }
 
+    @SuppressLint("CheckResult")
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         ButterKnife.bind(this, view);
-
+        RetrofitManager.getInstance().getUserInfo(String.valueOf(UserHelper.getId()))
+                .doOnNext(new Consumer<Optional<UserInfoEntity>>() {
+                    @Override
+                    public void accept(Optional<UserInfoEntity> userInfoEntityOptional) throws Exception {
+                        if (userInfoEntityOptional.get() != null) {
+                            UserHelper.setUserInfoEntity(userInfoEntityOptional.get());
+                            GlideImageLoader.getInstance().loadImage(getContext(), userInfoEntityOptional.get().getAvatar(), ivHead);
+                        }
+                    }
+                })
+                .subscribe(Functions.emptyConsumer(), com.kyle.takeaway.base.Functions.throwables());
     }
 
     @Override
@@ -84,6 +105,10 @@ public class UserMineFragment extends SupportFragment {
     }
 
     public void setPhoto(String photo) {
+        RetrofitManager.getInstance().uploadPic(photo)
+                .flatMap((Function<String, ObservableSource<?>>) s -> RetrofitManager.getInstance().editUserInfo(s))
+                .doOnNext(o -> ToastUtils.showShort("修改成功"))
+                .subscribe(Functions.emptyConsumer(), com.kyle.takeaway.base.Functions.throwables());
         GlideImageLoader.getInstance().loadImage(getContext(), photo, ivHead);
     }
 

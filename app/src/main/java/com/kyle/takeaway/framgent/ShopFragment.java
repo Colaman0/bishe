@@ -17,15 +17,23 @@ import android.widget.TextView;
 
 import com.blankj.utilcode.util.ToastUtils;
 import com.kyle.takeaway.R;
+import com.kyle.takeaway.RetrofitManager;
 import com.kyle.takeaway.activity.ShopDetailActivity;
 import com.kyle.takeaway.adapter.FeaturesAdapter;
+import com.kyle.takeaway.base.RecyclerViewModel;
+import com.kyle.takeaway.entity.Constants;
+import com.kyle.takeaway.entity.StoreEntity;
 import com.kyle.takeaway.item.ShopItemViewModel;
 import com.kyle.takeaway.view.TitleBar;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 import butterknife.Unbinder;
+import io.reactivex.functions.Consumer;
+import io.reactivex.internal.functions.Functions;
 import me.yokeyword.fragmentation.SupportFragment;
 
 /**
@@ -57,6 +65,7 @@ public class ShopFragment extends Fragment {
     private String fee = "fee";
 
     private String sortType = "";
+    private int sort = 0;
 
     @Nullable
     @Override
@@ -85,16 +94,27 @@ public class ShopFragment extends Fragment {
                 }));
         mAdapter = new FeaturesAdapter(getActivity())
                 .bindRecyclerView(recyclerview)
-                .addItemClickListener((position, itemView) -> gotoDetail());
+                .addItemClickListener((position, itemView) -> gotoDetail(position));
         recyclerview.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         recyclerview.setAdapter(mAdapter);
-        for (int i = 0; i < 10; i++) {
-            mAdapter.add(new ShopItemViewModel());
-        }
+        getData();
     }
 
-    private void gotoDetail() {
+    private void getData() {
+        mAdapter.clear();
+        RetrofitManager.getInstance().getStores(sort, "")
+                .doOnNext(storeEntities -> {
+                    for (int i = 0; i < storeEntities.size(); i++) {
+                        mAdapter.add(new ShopItemViewModel(storeEntities.get(i)));
+                    }
+                    mAdapter.notifyDataSetChanged();
+                })
+                .subscribe(Functions.emptyConsumer(), com.kyle.takeaway.base.Functions.throwables());
+    }
+
+    private void gotoDetail(int position) {
         Intent intent = new Intent(getContext(), ShopDetailActivity.class);
+        intent.putExtra(Constants.DATA, ((ShopItemViewModel) mAdapter.getDatas().get(position)).getId());
         getContext().startActivity(intent);
     }
 
@@ -131,6 +151,12 @@ public class ShopFragment extends Fragment {
                 }
                 break;
         }
+        if (sortType.equalsIgnoreCase(sell)) {
+            sort = llSell.isSelected() ? 1 : 2;
+        } else {
+            sort = llFee.isSelected() ? 3 : 4;
+        }
+        getData();
     }
 
     private void setIconStatus(ImageView view, boolean isSelect) {
