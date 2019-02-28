@@ -2,26 +2,27 @@ package com.kyle.takeaway;
 
 import android.util.Log;
 
-import com.blankj.utilcode.util.NetworkUtils;
-import com.blankj.utilcode.util.ToastUtils;
 import com.google.common.base.Optional;
 import com.kyle.takeaway.entity.AddressEntity;
+import com.kyle.takeaway.entity.CartItemEntity;
+import com.kyle.takeaway.entity.CartParam;
+import com.kyle.takeaway.entity.CartProductParam;
 import com.kyle.takeaway.entity.Constants;
 import com.kyle.takeaway.entity.LoginEntity;
+import com.kyle.takeaway.entity.OrderItemEntity;
 import com.kyle.takeaway.entity.PageDTO;
 import com.kyle.takeaway.entity.ProductEntity;
 import com.kyle.takeaway.entity.StoreEntity;
-import com.kyle.takeaway.entity.UploadEntity;
 import com.kyle.takeaway.entity.UserInfoEntity;
 import com.kyle.takeaway.util.UserHelper;
 
 import java.io.File;
+import java.util.Arrays;
 import java.util.List;
 
 import io.reactivex.Observable;
 import io.reactivex.android.schedulers.AndroidSchedulers;
 import io.reactivex.functions.Function;
-import io.reactivex.internal.functions.Functions;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -181,6 +182,39 @@ public class RetrofitManager {
         return service.uploadPic(prepareFilePart("description", new File(filePath)), createPartFromString("pic"))
                 .compose(RxResponse.getData())
                 .map(uploadEntityOptional -> uploadEntityOptional.get() != null ? uploadEntityOptional.get().getUrls().get(0) : "")
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    public Observable addToCart(int id) {
+        CartParam param = new CartParam();
+        param.setUserId(UserHelper.getId());
+        param.setProducts(Arrays.asList(new CartProductParam(id, 1, 0)));
+        return service.handleCart(param)
+                .compose(RxResponse.getData())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    public Observable<List<CartItemEntity>> getCarts() {
+        return service.getCarts(UserHelper.getId())
+                .compose(RxResponse.getData())
+                .map(listOptional -> listOptional.get())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    public Observable<List<OrderItemEntity>> getOrders() {
+        return service.getOrders(UserHelper.getId(), 0, 1, 200)
+                .compose(RxResponse.getData())
+                .map(pageDTOOptional -> pageDTOOptional.get().getList())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    public Observable commitComment(int orderId, String content) {
+        return service.commitComment(orderId, UserHelper.getId(), content)
+                .compose(RxResponse.getData())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }

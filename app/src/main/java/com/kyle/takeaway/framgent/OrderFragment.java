@@ -1,5 +1,6 @@
 package com.kyle.takeaway.framgent;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -10,18 +11,15 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
 
-import com.blankj.utilcode.util.ToastUtils;
 import com.kyle.takeaway.R;
+import com.kyle.takeaway.RetrofitManager;
 import com.kyle.takeaway.adapter.FeaturesAdapter;
+import com.kyle.takeaway.base.Functions;
 import com.kyle.takeaway.item.OrderItemViewModel;
-import com.kyle.takeaway.item.ShopItemViewModel;
-import com.kyle.takeaway.view.TitleBar;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
-import butterknife.OnClick;
 import butterknife.Unbinder;
 
 /**
@@ -58,8 +56,26 @@ public class OrderFragment extends Fragment {
                 .addItemClickListener((position, itemView) -> Log.d("cola", "position = " + position));
         recyclerview.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         recyclerview.setAdapter(mAdapter);
-        for (int i = 0; i < 10; i++) {
-            mAdapter.add(new OrderItemViewModel());
+        getData();
+    }
+
+    private void getData() {
+        mAdapter.clear();
+        RetrofitManager.getInstance().getOrders()
+                .doOnNext(orderItemEntities -> {
+                    for (int i = 0; i < orderItemEntities.size(); i++) {
+                        mAdapter.add(new OrderItemViewModel(orderItemEntities.get(i)));
+                    }
+                    mAdapter.notifyDataSetChanged();
+                })
+                .subscribe(Functions.empty(), Functions.throwables());
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == -1) {
+             getData();
         }
     }
 }

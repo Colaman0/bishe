@@ -12,6 +12,8 @@ import com.kyle.takeaway.activity.AddReturnActivity;
 import com.kyle.takeaway.adapter.FeaturesAdapter;
 import com.kyle.takeaway.base.BaseViewHolder;
 import com.kyle.takeaway.base.RecyclerViewModel;
+import com.kyle.takeaway.entity.Constants;
+import com.kyle.takeaway.entity.OrderItemEntity;
 
 import java.util.Arrays;
 import java.util.List;
@@ -28,6 +30,7 @@ import butterknife.OnClick;
  * </pre>
  */
 public class OrderItemViewModel extends RecyclerViewModel {
+    private final OrderItemEntity mOrderItemEntity;
     @BindView(R.id.tv_name)
     TextView tvName;
     @BindView(R.id.tv_status)
@@ -40,6 +43,12 @@ public class OrderItemViewModel extends RecyclerViewModel {
     TextView tvComment;
     @BindView(R.id.tv_return)
     TextView tvReturn;
+
+    private int mOrderId;
+
+    public OrderItemViewModel(OrderItemEntity orderItemEntity) {
+        mOrderItemEntity = orderItemEntity;
+    }
 
     @Override
     public int getLayoutRes() {
@@ -70,10 +79,14 @@ public class OrderItemViewModel extends RecyclerViewModel {
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_comment:
-                getContext().startActivity(new Intent(getContext(), AddCommentActivity.class));
+                Intent intentComment = new Intent(getContext(), AddCommentActivity.class);
+                intentComment.putExtra(Constants.DATA, mOrderId);
+                getContext().startActivity(intentComment);
                 break;
             case R.id.tv_return:
-                getContext().startActivity(new Intent(getContext(), AddReturnActivity.class));
+                Intent intentReturn = new Intent(getContext(), AddReturnActivity.class);
+                intentReturn.putExtra(Constants.DATA, mOrderId);
+                getContext().startActivity(intentReturn);
                 break;
         }
     }

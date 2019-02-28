@@ -14,9 +14,14 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.kyle.takeaway.R;
+import com.kyle.takeaway.RetrofitManager;
 import com.kyle.takeaway.activity.CommitOrderActivity;
 import com.kyle.takeaway.adapter.FeaturesAdapter;
+import com.kyle.takeaway.base.Functions;
+import com.kyle.takeaway.entity.CartItemEntity;
 import com.kyle.takeaway.item.ItemCartViewModel;
+
+import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -70,9 +75,21 @@ public class CartFragment extends Fragment {
                 .addItemClickListener((position, itemView) -> Log.d("cola", "position = " + position));
         recyclerview.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         recyclerview.setAdapter(mAdapter);
-        for (int i = 0; i < 10; i++) {
-            mAdapter.add(new ItemCartViewModel(getAction()).setDeleteAction(mDeleteAction));
-        }
+       getData();
+    }
+
+    private void getData() {
+        mAdapter.clear();
+        RetrofitManager.getInstance().getCarts()
+                .doOnNext(new Consumer<List<CartItemEntity>>() {
+                    @Override
+                    public void accept(List<CartItemEntity> cartItemEntities) throws Exception {
+                        for (int i = 0; i < cartItemEntities.size(); i++) {
+                            mAdapter.add(new ItemCartViewModel(cartItemEntities.get(i),getAction()).setDeleteAction(mDeleteAction));
+                        }
+                    }
+                })
+                .subscribe(Functions.empty(), Functions.throwables());
     }
 
     private Action getAction() {

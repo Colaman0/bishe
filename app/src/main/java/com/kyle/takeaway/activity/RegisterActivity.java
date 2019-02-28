@@ -11,7 +11,6 @@ import com.kyle.takeaway.R;
 import com.kyle.takeaway.RetrofitManager;
 import com.kyle.takeaway.base.BaseActivity;
 import com.kyle.takeaway.base.Functions;
-import com.kyle.takeaway.util.UserHelper;
 
 import java.util.Timer;
 import java.util.TimerTask;
@@ -85,7 +84,7 @@ public class RegisterActivity extends BaseActivity {
         switch (view.getId()) {
             case R.id.btn_send_code:
                 if (edtPhone.getText().toString().length() > 0) {
-                    RetrofitManager.getInstance().getRegisterCode(edtPhone.getText().toString(), checkbox.isChecked() ? 0 : 1)
+                    RetrofitManager.getInstance().getRegisterCode(edtPhone.getText().toString(), checkbox.isChecked() ? 2 : 1)
                             .doOnNext(o -> countDown())
                             .subscribe(Functions.empty(), Functions.throwables());
                 } else {

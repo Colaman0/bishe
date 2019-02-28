@@ -1,18 +1,17 @@
 package com.kyle.takeaway.item;
 
-import android.support.annotation.NonNull;
 import android.support.v7.widget.AppCompatButton;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.afollestad.materialdialogs.DialogAction;
-import com.afollestad.materialdialogs.MaterialDialog;
+import com.blankj.utilcode.util.ToastUtils;
 import com.kyle.takeaway.R;
+import com.kyle.takeaway.RetrofitManager;
 import com.kyle.takeaway.base.BaseViewHolder;
+import com.kyle.takeaway.base.Functions;
 import com.kyle.takeaway.base.RecyclerViewModel;
 import com.kyle.takeaway.entity.ProductEntity;
-import com.kyle.takeaway.util.DialogUtil;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -69,15 +68,16 @@ public class ItemShopDetailViewModel extends RecyclerViewModel {
         switch (view.getId()) {
             case R.id.tv_add:
                 num++;
+                RetrofitManager.getInstance().addToCart(mProductEntity.getFood_id())
+                        .doOnNext(o -> ToastUtils.showShort("加入购物车成功"))
+                        .subscribe(Functions.empty(), Functions.throwables());
                 break;
             case R.id.tv_less:
                 if (num >= 1) {
                     num--;
                 }
-                tvAccount.setText(String.valueOf(num));
                 break;
         }
-
         tvAccount.setText(String.valueOf(num));
     }
 }

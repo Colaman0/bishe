@@ -36,6 +36,14 @@ public class Constants {
     public static final String GET_STORE = BASE_URL + "/store_api/store_center/get_store_list";
     public static final String GET_STORE_DETAIL = BASE_URL + "/food_api/food_center/get_food_list";
 
+    public static final String POST_CART = BASE_URL + "/food_api/food_center/edit_car_food";
+    public static final String GET_CART = BASE_URL + "/food_api/food_center/car_food_list";
+
+    public static final String GET_ORDER = BASE_URL + "/user_api/order/get_order_list";
+    public static final String POST_COMMENT  = BASE_URL + "/user_api/user_center/add_evaluation";
+
+
+
 
 }
 

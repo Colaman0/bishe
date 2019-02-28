@@ -64,7 +64,6 @@ public class ResetPswActivity extends BaseActivity {
                             UserHelper.isInit() ? UserHelper.getAccountType() : checkbox.isChecked() ? 2 : 1)
                             .doOnNext(o -> countDown())
                             .subscribe(Functions.emptyConsumer(), com.kyle.takeaway.base.Functions.throwables());
-                    ;
                 }
                 break;
             case R.id.btn_commit:

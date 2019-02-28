@@ -1,18 +1,16 @@
 package com.kyle.takeaway.item;
 
-import android.arch.lifecycle.LiveData;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.View;
 import android.widget.CheckBox;
 
 import com.kyle.takeaway.R;
 import com.kyle.takeaway.adapter.FeaturesAdapter;
 import com.kyle.takeaway.base.BaseViewHolder;
 import com.kyle.takeaway.base.RecyclerViewModel;
+import com.kyle.takeaway.entity.CartItemEntity;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import io.reactivex.functions.Action;
@@ -27,6 +25,7 @@ import io.reactivex.functions.Consumer;
  */
 public class ItemCartViewModel extends RecyclerViewModel {
     private final Action mAction;
+    private final CartItemEntity mCartItemEntity;
     private Consumer<ItemCartProductViewModel> mDeleteAction = new Consumer<ItemCartProductViewModel>() {
         @Override
         public void accept(ItemCartProductViewModel itemCartProductViewModel) throws Exception {
@@ -43,11 +42,14 @@ public class ItemCartViewModel extends RecyclerViewModel {
     private FeaturesAdapter adapter;
     private Consumer<ItemCartViewModel> mConsumer;
 
-    public ItemCartViewModel(Action action) {
+    public ItemCartViewModel(CartItemEntity cartItemEntity, Action action) {
+        mCartItemEntity = cartItemEntity;
         mAction = action;
-        datas.add(new ItemCartProductViewModel(1, 10).setAction(mAction).setDeleteAction(mDeleteAction));
-        datas.add(new ItemCartProductViewModel(2, 10).setAction(mAction).setDeleteAction(mDeleteAction));
-        datas.add(new ItemCartProductViewModel(3, 10).setAction(mAction).setDeleteAction(mDeleteAction));
+        List<CartItemEntity.FoodListBean> foodList = mCartItemEntity.getFoodList();
+        for (int i = 0; i < foodList.size(); i++) {
+            CartItemEntity.FoodListBean foodListBean = foodList.get(i);
+            datas.add(new ItemCartProductViewModel(foodListBean.getNum(),foodListBean.getPrice()).setAction(mAction).setDeleteAction(mDeleteAction));
+        }
     }
 
     @Override
@@ -57,22 +59,19 @@ public class ItemCartViewModel extends RecyclerViewModel {
 
     @Override
     protected void onBindView(BaseViewHolder holder) {
-        holder.setText(R.id.tv_name, "店铺");
+        holder.setText(R.id.tv_name, mCartItemEntity.getStoreName());
         RecyclerView recyclerView = holder.getView(R.id.recyclerview);
         recyclerView.setLayoutManager(new LinearLayoutManager(holder.getContext()));
         adapter = new FeaturesAdapter(holder.getContext());
         recyclerView.setAdapter(adapter);
         adapter.addAll(datas);
         ((CheckBox) holder.getView(R.id.checkbox)).setChecked(select);
-        holder.getView(R.id.checkbox).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                select = ((CheckBox) holder.getView(R.id.checkbox)).isChecked();
-                try {
-                    mAction.run();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+        holder.getView(R.id.checkbox).setOnClickListener(v -> {
+            select = ((CheckBox) holder.getView(R.id.checkbox)).isChecked();
+            try {
+                mAction.run();
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         });
     }
