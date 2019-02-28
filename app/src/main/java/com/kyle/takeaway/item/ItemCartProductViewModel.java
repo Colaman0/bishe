@@ -8,8 +8,10 @@ import android.widget.TextView;
 import com.afollestad.materialdialogs.DialogAction;
 import com.afollestad.materialdialogs.MaterialDialog;
 import com.kyle.takeaway.R;
+import com.kyle.takeaway.RetrofitManager;
 import com.kyle.takeaway.base.BaseViewHolder;
 import com.kyle.takeaway.base.RecyclerViewModel;
+import com.kyle.takeaway.base.bus.RxBus;
 import com.kyle.takeaway.util.DialogUtil;
 
 import butterknife.BindView;
@@ -17,6 +19,7 @@ import butterknife.ButterKnife;
 import butterknife.OnClick;
 import io.reactivex.functions.Action;
 import io.reactivex.functions.Consumer;
+import io.reactivex.internal.functions.Functions;
 
 /**
  * <pre>
@@ -26,6 +29,8 @@ import io.reactivex.functions.Consumer;
  * </pre>
  */
 public class ItemCartProductViewModel extends RecyclerViewModel {
+    private final String mName;
+    private final int mId;
     public int num;
     public int account;
     public int singlePrice;
@@ -38,9 +43,11 @@ public class ItemCartProductViewModel extends RecyclerViewModel {
     private Action mAction;
     private Consumer<ItemCartProductViewModel> mDeleteAction;
 
-    public ItemCartProductViewModel(int num, int singlePrice) {
+    public ItemCartProductViewModel(int id, int num, int singlePrice, String name) {
+        mId = id;
         this.num = num;
         this.singlePrice = singlePrice;
+        mName = name;
     }
 
     @Override
@@ -52,6 +59,7 @@ public class ItemCartProductViewModel extends RecyclerViewModel {
     protected void onBindView(BaseViewHolder holder) {
         ButterKnife.bind(this, holder.getConvertView());
         tvAccount.setText(String.valueOf(num));
+        holder.setText(R.id.tv_name, mName);
     }
 
     @Override
@@ -70,31 +78,19 @@ public class ItemCartProductViewModel extends RecyclerViewModel {
                 num++;
                 break;
             case R.id.tv_less:
-                if (num > 1) {
+                if (num >= 1) {
                     num--;
-                } else if (num == 1) {
-                    DialogUtil.getSureTipsDialog(getContext(), "确认删除该菜品？", new MaterialDialog.SingleButtonCallback() {
-                        @Override
-                        public void onClick(@NonNull MaterialDialog dialog, @NonNull DialogAction which) {
-                            num = 0;
-                            try {
-                                mAction.run();
-                                tvAccount.setText(String.valueOf(num));
-                                mDeleteAction.accept(ItemCartProductViewModel.this);
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    }).show();
                 }
                 break;
         }
+        RetrofitManager.getInstance().editCart(mId, num)
+                .doOnNext(o -> RxBus.getDefault().send(true, "cart"))
+                .subscribe(Functions.emptyConsumer(), com.kyle.takeaway.base.Functions.throwables());
         try {
             mAction.run();
         } catch (Exception e) {
             e.printStackTrace();
         }
-        tvAccount.setText(String.valueOf(num));
     }
 
     public int getAccount() {

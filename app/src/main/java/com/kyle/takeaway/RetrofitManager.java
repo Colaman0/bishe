@@ -3,6 +3,7 @@ package com.kyle.takeaway;
 import android.util.Log;
 
 import com.google.common.base.Optional;
+import com.google.gson.Gson;
 import com.kyle.takeaway.entity.AddressEntity;
 import com.kyle.takeaway.entity.CartItemEntity;
 import com.kyle.takeaway.entity.CartParam;
@@ -12,7 +13,9 @@ import com.kyle.takeaway.entity.LoginEntity;
 import com.kyle.takeaway.entity.OrderItemEntity;
 import com.kyle.takeaway.entity.PageDTO;
 import com.kyle.takeaway.entity.ProductEntity;
+import com.kyle.takeaway.entity.SellHistoryEntity;
 import com.kyle.takeaway.entity.StoreEntity;
+import com.kyle.takeaway.entity.StoreInfoEntity;
 import com.kyle.takeaway.entity.UserInfoEntity;
 import com.kyle.takeaway.util.UserHelper;
 
@@ -169,7 +172,7 @@ public class RetrofitManager {
         if (UserHelper.getAccountType() == 1) {
             observable = service.userChangePsw(String.valueOf(UserHelper.getId()), old, newPassword);
         } else {
-            observable = service.storeChangePsw(String.valueOf(UserHelper.getId()), old, newPassword);
+            observable = service.storeChangePsw(String.valueOf(UserHelper.getmStoreId()), old, newPassword);
         }
         return observable
                 .compose(RxResponse.getData())
@@ -187,10 +190,14 @@ public class RetrofitManager {
     }
 
     public Observable addToCart(int id) {
-        CartParam param = new CartParam();
-        param.setUserId(UserHelper.getId());
-        param.setProducts(Arrays.asList(new CartProductParam(id, 1, 0)));
-        return service.handleCart(param)
+        return service.handleCart(UserHelper.getId(), new Gson().toJson(Arrays.asList(new CartProductParam(id, 1, 1))))
+                .compose(RxResponse.getData())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    public Observable editCart(int id, int num) {
+        return service.handleCart(UserHelper.getId(), new Gson().toJson(Arrays.asList(new CartProductParam(id, num, 0))))
                 .compose(RxResponse.getData())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
@@ -212,12 +219,73 @@ public class RetrofitManager {
                 .observeOn(AndroidSchedulers.mainThread());
     }
 
+    public Observable<List<OrderItemEntity>> getStoreOrders() {
+        return service.getStoreOrders(UserHelper.getmStoreId(), 0, 1, 200)
+                .compose(RxResponse.getData())
+                .map(pageDTOOptional -> pageDTOOptional.get().getList())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
     public Observable commitComment(int orderId, String content) {
         return service.commitComment(orderId, UserHelper.getId(), content)
                 .compose(RxResponse.getData())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }
+
+    public Observable<StoreInfoEntity> getStoreInfo() {
+        return service.getStoreInfo(UserHelper.getmStoreId())
+                .compose(RxResponse.getData())
+                .map(storeInfoEntityOptional -> storeInfoEntityOptional.get())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    public Observable editStoreInfo(String avatar, String fee, String name) {
+        return service.editStoreInfo(UserHelper.getmStoreId(), avatar, name, fee)
+                .compose(RxResponse.getData())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    public Observable deleteProduct(int id) {
+        return service.deleteProduct(id)
+                .compose(RxResponse.getData())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    public Observable addProduct(int id, String pic, String decs, String price, String name) {
+        return service.addProduct(UserHelper.getmStoreId(), pic, decs, price, name)
+                .compose(RxResponse.getData())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    public Observable editProduct(int id, String pic, String decs, String price, String name) {
+        return service.editProduct(id, pic, decs, price, name)
+                .compose(RxResponse.getData())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    public Observable sendOrder(int id) {
+        return service.sendOrder(id)
+                .compose(RxResponse.getData())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+
+    public Observable<List<SellHistoryEntity>> getSellHistory(int id) {
+        return service.getSellHistory(id)
+                .compose(RxResponse.getData())
+                .map(pageDTOOptional -> pageDTOOptional.get())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
 
     public static RequestBody createPartFromString(String descriptionString) {
         if (descriptionString == null) {

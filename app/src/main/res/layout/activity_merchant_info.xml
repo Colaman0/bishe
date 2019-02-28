@@ -57,14 +57,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginRight="8dp"
-            android:text="负责人"
+            android:text="配送费"
             android:textSize="16sp" />
 
         <EditText
-            android:id="@+id/edt_phone"
+            android:id="@+id/edt_fee"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="请输入新负责人姓名"
+            android:hint="请输入配送费"
             android:inputType="number"
             android:maxLines="1"
             android:textSize="16sp" />

@@ -104,7 +104,7 @@ public class ResetPswActivity extends BaseActivity {
         RetrofitManager.getInstance().resetPsw(edtPhone.getText().toString(), edtPsw.getText().toString(), edtCode.getText().toString(),
                 UserHelper.isInit() ? UserHelper.getAccountType() : checkbox.isChecked() ? 2 : 1)
                 .doOnNext(o -> {
-                    goToAcitivty(LoginActivity.class);
+                    ToastUtils.showShort("重置成功");
                     finish();
                 })
                 .subscribe(Functions.emptyConsumer(), com.kyle.takeaway.base.Functions.throwables());

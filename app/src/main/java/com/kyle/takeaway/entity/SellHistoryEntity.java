@@ -1,41 +1,34 @@
 package com.kyle.takeaway.entity;
 
-import java.io.Serializable;
 import java.util.List;
 
 /**
  * <pre>
  *     author : kyle
- *     time   : 2019/2/27
+ *     time   : 2019/2/28
  *     desc   :
  * </pre>
  */
-public class ProductEntity implements Serializable {
+public class SellHistoryEntity {
     /**
-     * store_id : 1
-     * food_name : 测试
+     * food_name : 香蕉船
      * cover_url : http://xmy1996.oicp.io:42418/upload/temp/2.png
-     * price : 23123.0
-     * description : 123
-     * pic_urls : ["http://xmy1996.oicp.io:42418/upload/temp/2.png","http://xmy1996.oicp.io:42418/upload/temp/2.png"]
-     * food_id : 1
+     * price : 100.0
+     * num : 2
+     * total_fee : 200.0
+     * description : 香蕉船香蕉船香蕉船香蕉船香蕉船香蕉船
+     * pic_urls : ["http://xmy1996.oicp.io:42418/upload/temp/2.png"]
+     * food_id : 5
      */
 
-    private int store_id;
     private String food_name;
     private String cover_url;
     private double price;
+    private int num;
+    private double total_fee;
     private String description;
     private int food_id;
     private List<String> pic_urls;
-
-    public int getStore_id() {
-        return store_id;
-    }
-
-    public void setStore_id(int store_id) {
-        this.store_id = store_id;
-    }
 
     public String getFood_name() {
         return food_name;
@@ -59,6 +52,22 @@ public class ProductEntity implements Serializable {
 
     public void setPrice(double price) {
         this.price = price;
+    }
+
+    public int getNum() {
+        return num;
+    }
+
+    public void setNum(int num) {
+        this.num = num;
+    }
+
+    public double getTotal_fee() {
+        return total_fee;
+    }
+
+    public void setTotal_fee(double total_fee) {
+        this.total_fee = total_fee;
     }
 
     public String getDescription() {

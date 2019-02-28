@@ -49,7 +49,7 @@ public class LoginActivity extends BaseActivity {
     }
 
 
-    @OnClick({R.id.btn_login, R.id.tv_reset_psw,R.id.tv_register})
+    @OnClick({R.id.btn_login, R.id.tv_reset_psw, R.id.tv_register})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.btn_login:
@@ -74,12 +74,8 @@ public class LoginActivity extends BaseActivity {
     private void userLogin() {
         RetrofitManager.getInstance().userLogin(edtPhone.getText().toString(), edtCode.getText().toString())
                 .doOnNext(s -> {
-                    UserHelper.setUserInfo(true,s.get().getUserId());
-                    if (checkbox.isChecked()) {
-                        goToAcitivty(MerchantHomeActivity.class);
-                    } else {
-                        goToAcitivty(UserHomeActivity.class);
-                    }
+                    UserHelper.setUserInfo(true, s.get().getUserId());
+                    goToAcitivty(UserHomeActivity.class);
                 })
                 .subscribe(Functions.empty(), Functions.throwables());
     }
@@ -87,12 +83,8 @@ public class LoginActivity extends BaseActivity {
     private void storeLogin() {
         RetrofitManager.getInstance().storeLogin(edtPhone.getText().toString(), edtCode.getText().toString())
                 .doOnNext(s -> {
-                    UserHelper.setUserInfo(false,s.get().getUserId());
-                    if (checkbox.isChecked()) {
-                        goToAcitivty(MerchantHomeActivity.class);
-                    } else {
-                        goToAcitivty(UserHomeActivity.class);
-                    }
+                    UserHelper.setStoreInfo(false, s.get().getStoreId());
+                    goToAcitivty(MerchantHomeActivity.class);
                 })
                 .subscribe(Functions.empty(), Functions.throwables());
     }
@@ -107,6 +99,6 @@ public class LoginActivity extends BaseActivity {
 
     @OnClick(R.id.tv_reset_psw)
     public void onViewClicked() {
-        goToAcitivty(ResetPswActivity.class        );
+        goToAcitivty(ResetPswActivity.class);
     }
 }

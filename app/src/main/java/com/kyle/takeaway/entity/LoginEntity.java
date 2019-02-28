@@ -15,11 +15,22 @@ public class LoginEntity {
     @SerializedName("user_id")
     private int userId;
 
+    @SerializedName("store_id")
+    private int storeId;
+
     public int getUserId() {
         return userId;
     }
 
     public void setUserId(int userId) {
         this.userId = userId;
+    }
+
+    public int getStoreId() {
+        return storeId;
+    }
+
+    public void setStoreId(int storeId) {
+        this.storeId = storeId;
     }
 }

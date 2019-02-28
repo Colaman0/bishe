@@ -15,6 +15,8 @@ import com.kyle.takeaway.util.UserHelper;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import io.reactivex.functions.Consumer;
+import io.reactivex.internal.functions.Functions;
 
 /**
  * <pre>
@@ -61,7 +63,12 @@ public class ChangePswActivity extends BaseActivity {
         if (edtCode.getText().toString().length() < 1 || edtPhone.getText().toString().length() < 1) {
             ToastUtils.showShort("请完善密码");
         } else {
-            RetrofitManager.getInstance().changePsw(edtPhone.getText().toString(), edtCode.getText().toString());
+            RetrofitManager.getInstance().changePsw(edtPhone.getText().toString(), edtCode.getText().toString())
+                    .doOnNext(o -> {
+                        ToastUtils.showShort("修改成功");
+                        finish();
+                    })
+                    .subscribe(Functions.emptyConsumer(), com.kyle.takeaway.base.Functions.throwables());
         }
     }
 }

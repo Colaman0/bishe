@@ -11,6 +11,7 @@ import com.kyle.takeaway.RetrofitManager;
 import com.kyle.takeaway.base.BaseViewHolder;
 import com.kyle.takeaway.base.Functions;
 import com.kyle.takeaway.base.RecyclerViewModel;
+import com.kyle.takeaway.base.bus.RxBus;
 import com.kyle.takeaway.entity.ProductEntity;
 
 import butterknife.BindView;
@@ -34,10 +35,7 @@ public class ItemShopDetailViewModel extends RecyclerViewModel {
     TextView tvDetail;
     @BindView(R.id.tv_add)
     AppCompatButton tvAdd;
-    @BindView(R.id.tv_account)
-    TextView tvAccount;
-    @BindView(R.id.tv_less)
-    AppCompatButton tvLess;
+
 
     private int num;
 
@@ -63,21 +61,18 @@ public class ItemShopDetailViewModel extends RecyclerViewModel {
         return false;
     }
 
-    @OnClick({R.id.tv_add, R.id.tv_less})
+    @OnClick({R.id.tv_add})
     public void onViewClicked(View view) {
         switch (view.getId()) {
             case R.id.tv_add:
                 num++;
                 RetrofitManager.getInstance().addToCart(mProductEntity.getFood_id())
-                        .doOnNext(o -> ToastUtils.showShort("加入购物车成功"))
+                        .doOnNext(o -> {
+                            ToastUtils.showShort("加入购物车成功");
+                            RxBus.getDefault().send(true, "cart");
+                        })
                         .subscribe(Functions.empty(), Functions.throwables());
                 break;
-            case R.id.tv_less:
-                if (num >= 1) {
-                    num--;
-                }
-                break;
         }
-        tvAccount.setText(String.valueOf(num));
     }
 }

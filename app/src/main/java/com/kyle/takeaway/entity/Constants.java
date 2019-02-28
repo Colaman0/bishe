@@ -42,6 +42,18 @@ public class Constants {
     public static final String GET_ORDER = BASE_URL + "/user_api/order/get_order_list";
     public static final String POST_COMMENT  = BASE_URL + "/user_api/user_center/add_evaluation";
 
+    public static final String GET_STORE_INFO  = BASE_URL + "/store_api/store_center/store_info";
+    public static final String EDIT_STORE_INFO  = BASE_URL + "/store_api/store_center/edit_store_info";
+
+    public static final String DELETE_PRODUCT  = BASE_URL + "/store_api/store_center/delete_food";
+    public static final String ADD_PRODUCT  = BASE_URL + "/store_api/store_center/add_food";
+    public static final String EDIT_PRODUCT  = BASE_URL + "/store_api/store_center/edit_food";
+
+
+    public static final String STORE_ORDERS  = BASE_URL + "/store_api/order/get_order_list";
+    public static final String ORDER_SEND  = BASE_URL + "/store_api/store_center/order_delivery";
+
+    public static final String STORE_SELL_HISTORY  = BASE_URL + "/store_api/store_center/account_report";
 
 
 

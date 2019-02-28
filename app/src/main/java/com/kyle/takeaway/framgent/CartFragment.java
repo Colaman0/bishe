@@ -18,6 +18,7 @@ import com.kyle.takeaway.RetrofitManager;
 import com.kyle.takeaway.activity.CommitOrderActivity;
 import com.kyle.takeaway.adapter.FeaturesAdapter;
 import com.kyle.takeaway.base.Functions;
+import com.kyle.takeaway.base.bus.RxBus;
 import com.kyle.takeaway.entity.CartItemEntity;
 import com.kyle.takeaway.item.ItemCartViewModel;
 
@@ -75,7 +76,11 @@ public class CartFragment extends Fragment {
                 .addItemClickListener((position, itemView) -> Log.d("cola", "position = " + position));
         recyclerview.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         recyclerview.setAdapter(mAdapter);
-       getData();
+        RxBus.getDefault().receiveEvent(Boolean.class, "cart")
+                .doOnNext(aBoolean -> getData())
+                .subscribe(Functions.empty(), Functions.throwables());
+        ;
+        getData();
     }
 
     private void getData() {
@@ -85,8 +90,9 @@ public class CartFragment extends Fragment {
                     @Override
                     public void accept(List<CartItemEntity> cartItemEntities) throws Exception {
                         for (int i = 0; i < cartItemEntities.size(); i++) {
-                            mAdapter.add(new ItemCartViewModel(cartItemEntities.get(i),getAction()).setDeleteAction(mDeleteAction));
+                            mAdapter.add(new ItemCartViewModel(cartItemEntities.get(i), getAction()).setDeleteAction(mDeleteAction));
                         }
+                        mAdapter.notifyDataSetChanged();
                     }
                 })
                 .subscribe(Functions.empty(), Functions.throwables());

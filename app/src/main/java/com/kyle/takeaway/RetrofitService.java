@@ -9,13 +9,16 @@ import com.kyle.takeaway.entity.LoginEntity;
 import com.kyle.takeaway.entity.OrderItemEntity;
 import com.kyle.takeaway.entity.PageDTO;
 import com.kyle.takeaway.entity.ProductEntity;
+import com.kyle.takeaway.entity.SellHistoryEntity;
 import com.kyle.takeaway.entity.StoreEntity;
+import com.kyle.takeaway.entity.StoreInfoEntity;
 import com.kyle.takeaway.entity.UploadEntity;
 import com.kyle.takeaway.entity.UserInfoEntity;
 
 import java.util.List;
 
 import io.reactivex.Observable;
+import io.reactivex.internal.operators.observable.ObservableJoin;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 import retrofit2.http.Body;
@@ -79,7 +82,7 @@ public interface RetrofitService {
      */
     @POST(Constants.STORE_CHANGE_PSW)
     @FormUrlEncoded
-    public Observable<BaseResponse<Object>> storeChangePsw(@Field("user_id") String id, @Field("oldPassword") String old, @Field("newPassword") String newPsw);
+    public Observable<BaseResponse<Object>> storeChangePsw(@Field("store_id") String id, @Field("oldPassword") String old, @Field("newPassword") String newPsw);
 
     /**
      * 用户信息
@@ -127,7 +130,8 @@ public interface RetrofitService {
     Observable<BaseResponse<PageDTO<ProductEntity>>> getStoreDetail(@Query("store_id") int store_id, @Query("page") int page, @Query("page_count") int page_count);
 
     @POST(Constants.POST_CART)
-    Observable<BaseResponse<PageDTO<ProductEntity>>> handleCart(@Body CartParam param);
+    @FormUrlEncoded
+    Observable<BaseResponse<PageDTO<ProductEntity>>> handleCart(@Field("user_id") int userId, @Field("foods_json") String foods);
 
     @GET(Constants.GET_CART)
     Observable<BaseResponse<List<CartItemEntity>>> getCarts(@Query("user_id") int userId);
@@ -140,4 +144,37 @@ public interface RetrofitService {
     @FormUrlEncoded
     Observable<BaseResponse<Object>> commitComment(@Field("order_id") int orderId, @Field("user_id") int user_id,
                                                    @Field("content") String content);
+
+    @GET(Constants.GET_STORE_INFO)
+    Observable<BaseResponse<StoreInfoEntity>> getStoreInfo(@Query("store_id") int storeId);
+
+    @POST(Constants.EDIT_STORE_INFO)
+    @FormUrlEncoded
+    Observable<BaseResponse<Object>> editStoreInfo(@Field("store_id") int storeId, @Field("avatar") String avatar,
+                                                   @Field("store_name") String store_name, @Field("shipping_fee") String shipping_fee);
+
+    @POST(Constants.DELETE_PRODUCT)
+    @FormUrlEncoded
+    Observable<BaseResponse<Object>> deleteProduct(@Field("food_id") int id);
+
+    @POST(Constants.ADD_PRODUCT)
+    @FormUrlEncoded
+    Observable<BaseResponse<Object>> addProduct(@Field("store_id") int id, @Field("pic_urls") String pic,
+                                                @Field("description") String description, @Field("price") String price, @Field("food_name") String food_name);
+
+    @POST(Constants.EDIT_PRODUCT)
+    @FormUrlEncoded
+    Observable<BaseResponse<Object>> editProduct(@Field("food_id") int id, @Field("pic_urls") String pic,
+                                                 @Field("description") String description, @Field("price") String price, @Field("food_name") String food_name);
+
+    @GET(Constants.STORE_ORDERS)
+    Observable<BaseResponse<PageDTO<OrderItemEntity>>> getStoreOrders(@Query("store_id") int id, @Query("status") int status,
+                                                                      @Query("page") int page, @Query("page_count") int page_count);
+
+    @GET(Constants.ORDER_SEND)
+    Observable<BaseResponse<Object>> sendOrder(@Query("order_id") int id);
+
+    @GET(Constants.STORE_SELL_HISTORY)
+    Observable<BaseResponse<List<SellHistoryEntity>>> getSellHistory(@Query("store_id") int id);
+
 }

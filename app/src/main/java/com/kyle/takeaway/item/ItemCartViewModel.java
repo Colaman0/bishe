@@ -48,7 +48,7 @@ public class ItemCartViewModel extends RecyclerViewModel {
         List<CartItemEntity.FoodListBean> foodList = mCartItemEntity.getFoodList();
         for (int i = 0; i < foodList.size(); i++) {
             CartItemEntity.FoodListBean foodListBean = foodList.get(i);
-            datas.add(new ItemCartProductViewModel(foodListBean.getNum(),foodListBean.getPrice()).setAction(mAction).setDeleteAction(mDeleteAction));
+            datas.add(new ItemCartProductViewModel(foodListBean.getFoodId(), foodListBean.getNum(), foodListBean.getPrice(), foodListBean.getFoodName()).setAction(mAction).setDeleteAction(mDeleteAction));
         }
     }
 
