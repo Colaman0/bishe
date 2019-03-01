@@ -8,7 +8,7 @@ import android.view.ViewGroup;
 import com.kyle.takeaway.base.BaseViewHolder;
 import com.kyle.takeaway.base.IImageLoad;
 
-import java.util.function.Consumer;
+import io.reactivex.functions.Consumer;
 
 
 /**

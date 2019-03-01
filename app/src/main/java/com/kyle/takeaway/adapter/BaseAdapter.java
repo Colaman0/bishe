@@ -18,7 +18,8 @@ import com.kyle.takeaway.utils.GlideImageLoader;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-import java.util.function.Consumer;
+
+import io.reactivex.functions.Consumer;
 
 
 /**

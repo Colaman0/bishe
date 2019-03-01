@@ -46,6 +46,7 @@ public class AddCommentActivity extends BaseActivity {
                     .doOnNext(o -> {
                         RxBus.getDefault().send(true,"order");
                         ToastUtils.showShort("提交成功");
+                        RxBus.getDefault().send(true, "order");
                         setResult(RESULT_OK);
                         finish();
                     })

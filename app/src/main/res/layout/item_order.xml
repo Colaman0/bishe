@@ -72,6 +72,7 @@
         android:layout_width="wrap_content"
         android:layout_height="32dp"
         android:layout_marginLeft="16dp"
+        android:visibility="gone"
         android:layout_marginTop="8dp"
         android:background="@drawable/bg_btn"
         android:gravity="center"
@@ -79,7 +80,6 @@
         android:paddingRight="8dp"
         android:text="申请退款"
         android:textColor="@color/white"
-        android:visibility="gone"
         app:layout_constraintLeft_toRightOf="@id/tv_comment"
         app:layout_constraintTop_toBottomOf="@id/recyclerview" />
 
