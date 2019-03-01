@@ -2,17 +2,22 @@ package com.kyle.takeaway.item;
 
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
 import android.widget.CheckBox;
+import android.widget.TextView;
 
 import com.kyle.takeaway.R;
 import com.kyle.takeaway.adapter.FeaturesAdapter;
 import com.kyle.takeaway.base.BaseViewHolder;
 import com.kyle.takeaway.base.RecyclerViewModel;
 import com.kyle.takeaway.entity.CartItemEntity;
+import com.kyle.takeaway.entity.CommitOrderParam;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import io.reactivex.functions.Action;
 import io.reactivex.functions.Consumer;
 
@@ -26,6 +31,14 @@ import io.reactivex.functions.Consumer;
 public class ItemCartViewModel extends RecyclerViewModel {
     private final Action mAction;
     private final CartItemEntity mCartItemEntity;
+    @BindView(R.id.checkbox)
+    CheckBox checkbox;
+    @BindView(R.id.tv_name)
+    TextView tvName;
+    @BindView(R.id.view_line)
+    View viewLine;
+    @BindView(R.id.recyclerview)
+    RecyclerView recyclerview;
     private Consumer<ItemCartProductViewModel> mDeleteAction = new Consumer<ItemCartProductViewModel>() {
         @Override
         public void accept(ItemCartProductViewModel itemCartProductViewModel) throws Exception {
@@ -59,6 +72,7 @@ public class ItemCartViewModel extends RecyclerViewModel {
 
     @Override
     protected void onBindView(BaseViewHolder holder) {
+        ButterKnife.bind(this, holder.getConvertView());
         holder.setText(R.id.tv_name, mCartItemEntity.getStoreName());
         RecyclerView recyclerView = holder.getView(R.id.recyclerview);
         recyclerView.setLayoutManager(new LinearLayoutManager(holder.getContext()));
@@ -96,5 +110,19 @@ public class ItemCartViewModel extends RecyclerViewModel {
     public ItemCartViewModel setDeleteAction(Consumer<ItemCartViewModel> consumer) {
         mConsumer = consumer;
         return this;
+    }
+
+    public boolean isItemSelect() {
+        return checkbox.isChecked();
+    }
+
+    public List<CommitOrderParam> getParams() {
+        List<CommitOrderParam> params = new ArrayList<>();
+        for (int i = 0; i < mCartItemEntity.getFoodList().size(); i++) {
+            params.add(new CommitOrderParam(mCartItemEntity.getFoodList().get(i).getCarFoodId(),
+                    mCartItemEntity.getFoodList().get(i).getFoodId(),
+                    mCartItemEntity.getFoodList().get(i).getNum()));
+        }
+        return params;
     }
 }

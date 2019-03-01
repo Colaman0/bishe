@@ -18,6 +18,7 @@ import android.widget.TextView;
 import com.blankj.utilcode.util.ToastUtils;
 import com.kyle.takeaway.R;
 import com.kyle.takeaway.RetrofitManager;
+import com.kyle.takeaway.activity.SearchActivity;
 import com.kyle.takeaway.activity.ShopDetailActivity;
 import com.kyle.takeaway.adapter.FeaturesAdapter;
 import com.kyle.takeaway.base.RecyclerViewModel;
@@ -89,7 +90,7 @@ public class ShopFragment extends Fragment {
                 .addViewToRight(TitleBar.getIconView(getContext(), R.mipmap.ic_search, new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        ToastUtils.showShort("搜索");
+                        getContext().startActivity(new Intent(getActivity(), SearchActivity.class));
                     }
                 }));
         mAdapter = new FeaturesAdapter(getActivity())

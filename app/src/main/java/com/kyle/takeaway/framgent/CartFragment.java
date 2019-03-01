@@ -13,15 +13,22 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.blankj.utilcode.util.ToastUtils;
+import com.google.common.base.MoreObjects;
+import com.google.gson.Gson;
 import com.kyle.takeaway.R;
 import com.kyle.takeaway.RetrofitManager;
 import com.kyle.takeaway.activity.CommitOrderActivity;
 import com.kyle.takeaway.adapter.FeaturesAdapter;
 import com.kyle.takeaway.base.Functions;
+import com.kyle.takeaway.base.RecyclerViewModel;
 import com.kyle.takeaway.base.bus.RxBus;
 import com.kyle.takeaway.entity.CartItemEntity;
+import com.kyle.takeaway.entity.CommitOrderParam;
+import com.kyle.takeaway.entity.Constants;
 import com.kyle.takeaway.item.ItemCartViewModel;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -79,21 +86,18 @@ public class CartFragment extends Fragment {
         RxBus.getDefault().receiveEvent(Boolean.class, "cart")
                 .doOnNext(aBoolean -> getData())
                 .subscribe(Functions.empty(), Functions.throwables());
-        ;
         getData();
     }
 
     private void getData() {
         mAdapter.clear();
+        tvTotal.setText("0");
         RetrofitManager.getInstance().getCarts()
-                .doOnNext(new Consumer<List<CartItemEntity>>() {
-                    @Override
-                    public void accept(List<CartItemEntity> cartItemEntities) throws Exception {
-                        for (int i = 0; i < cartItemEntities.size(); i++) {
-                            mAdapter.add(new ItemCartViewModel(cartItemEntities.get(i), getAction()).setDeleteAction(mDeleteAction));
-                        }
-                        mAdapter.notifyDataSetChanged();
+                .doOnNext(cartItemEntities -> {
+                    for (int i = 0; i < cartItemEntities.size(); i++) {
+                        mAdapter.add(new ItemCartViewModel(cartItemEntities.get(i), getAction()).setDeleteAction(mDeleteAction));
                     }
+                    mAdapter.notifyDataSetChanged();
                 })
                 .subscribe(Functions.empty(), Functions.throwables());
     }
@@ -114,6 +118,19 @@ public class CartFragment extends Fragment {
 
     @OnClick(R.id.tv_commit)
     public void onViewClicked() {
-        getContext().startActivity(new Intent(getActivity(), CommitOrderActivity.class));
+        List<CommitOrderParam> params = new ArrayList<>();
+        for (int i = 0; i < mAdapter.getDatas().size(); i++) {
+            RecyclerViewModel recyclerViewModel = mAdapter.getDatas().get(i);
+            if (recyclerViewModel instanceof ItemCartViewModel && ((ItemCartViewModel) recyclerViewModel).isItemSelect()) {
+                params.addAll(((ItemCartViewModel) recyclerViewModel).getParams());
+            }
+        }
+        if (params.size() > 0) {
+            Intent intent = new Intent(getActivity(), CommitOrderActivity.class);
+            intent.putExtra(Constants.DATA, new Gson().toJson(params));
+            getContext().startActivity(intent);
+        } else {
+            ToastUtils.showShort("请选中商品");
+        }
     }
 }

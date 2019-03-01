@@ -7,6 +7,7 @@ import com.kyle.takeaway.R;
 import com.kyle.takeaway.adapter.FeaturesAdapter;
 import com.kyle.takeaway.base.BaseViewHolder;
 import com.kyle.takeaway.base.RecyclerViewModel;
+import com.kyle.takeaway.entity.OrderItemEntity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,11 +25,14 @@ public class ItemCommitOrderViewModel extends RecyclerViewModel {
 
     private List<RecyclerViewModel> datas = new ArrayList<>();
     private FeaturesAdapter adapter;
+    private OrderItemEntity mOrderItemEntity;
 
-    public ItemCommitOrderViewModel() {
-        datas.add(new ItemCommitOrderProductViewModel(3));
-        datas.add(new ItemCommitOrderProductViewModel(3));
-        datas.add(new ItemCommitOrderProductViewModel(3));
+    public ItemCommitOrderViewModel(OrderItemEntity orderItemEntity) {
+        mOrderItemEntity = orderItemEntity;
+        for (int i = 0; i < mOrderItemEntity.getFood_list().size(); i++) {
+            datas.add(new ItemCommitOrderProductViewModel(mOrderItemEntity.getFood_list().get(i).getFood_name(),
+                    mOrderItemEntity.getFood_list().get(i).getNum()));
+        }
     }
 
     @Override
@@ -38,7 +42,7 @@ public class ItemCommitOrderViewModel extends RecyclerViewModel {
 
     @Override
     protected void onBindView(BaseViewHolder holder) {
-        holder.setText(R.id.tv_name, "店铺");
+        holder.setText(R.id.tv_name, mOrderItemEntity.getStore_name());
         RecyclerView recyclerView = holder.getView(R.id.recyclerview);
         recyclerView.setLayoutManager(new LinearLayoutManager(holder.getContext()));
         adapter = new FeaturesAdapter(holder.getContext());

@@ -8,6 +8,7 @@ import com.kyle.takeaway.entity.AddressEntity;
 import com.kyle.takeaway.entity.CartItemEntity;
 import com.kyle.takeaway.entity.CartParam;
 import com.kyle.takeaway.entity.CartProductParam;
+import com.kyle.takeaway.entity.CommentEntity;
 import com.kyle.takeaway.entity.Constants;
 import com.kyle.takeaway.entity.LoginEntity;
 import com.kyle.takeaway.entity.OrderItemEntity;
@@ -282,6 +283,29 @@ public class RetrofitManager {
         return service.getSellHistory(id)
                 .compose(RxResponse.getData())
                 .map(pageDTOOptional -> pageDTOOptional.get())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    public Observable<List<OrderItemEntity>> preCommitOrder(String json) {
+        return service.preCommitOrder(UserHelper.getId(),json)
+                .compose(RxResponse.getData())
+                .map(Optional::get)
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    public Observable commitOrder(String json,int addressId) {
+        return service.commitOrder(UserHelper.getId(),json,addressId)
+                .compose(RxResponse.getData())
+                .subscribeOn(Schedulers.io())
+                .observeOn(AndroidSchedulers.mainThread());
+    }
+
+    public Observable<List<CommentEntity>> getComments() {
+        return service.getComments(UserHelper.getId(),1,200)
+                .compose(RxResponse.getData())
+                .map(pageDTOOptional -> pageDTOOptional.get().getList())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }

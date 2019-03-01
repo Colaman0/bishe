@@ -65,6 +65,9 @@
         <activity
             android:name=".activity.SellHistoryActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity
+            android:name=".activity.SearchActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
 
         <activity
             android:name=".activity.MerchantHomeActivity"

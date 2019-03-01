@@ -184,6 +184,21 @@ public class BaseViewHolder extends RecyclerView.ViewHolder {
         return this;
     }
 
+    /**
+     * 设置view是否可见
+     *
+     * @param id
+     * @param visibility
+     * @return
+     */
+    public BaseViewHolder setVisibility(@IdRes int id, boolean visibility) {
+        View view = getView(id);
+        if (view != null) {
+            view.setVisibility(visibility ? VISIBLE : GONE);
+        }
+        return this;
+    }
+
 
     /**
      * 设置view可见

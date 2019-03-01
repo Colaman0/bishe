@@ -16,11 +16,13 @@ import com.kyle.takeaway.R;
 import com.kyle.takeaway.RetrofitManager;
 import com.kyle.takeaway.adapter.FeaturesAdapter;
 import com.kyle.takeaway.base.Functions;
+import com.kyle.takeaway.base.bus.RxBus;
 import com.kyle.takeaway.item.OrderItemViewModel;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.Unbinder;
+import io.reactivex.functions.Consumer;
 
 /**
  * Create by kyle on 2019/2/18
@@ -56,6 +58,9 @@ public class OrderFragment extends Fragment {
                 .addItemClickListener((position, itemView) -> Log.d("cola", "position = " + position));
         recyclerview.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         recyclerview.setAdapter(mAdapter);
+        RxBus.getDefault().receiveEvent(Boolean.class, "order")
+                .doOnNext(aBoolean -> getData())
+                .subscribe(Functions.empty(), Functions.throwables());
         getData();
     }
 

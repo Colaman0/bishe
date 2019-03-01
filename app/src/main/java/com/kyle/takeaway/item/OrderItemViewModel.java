@@ -15,6 +15,7 @@ import com.kyle.takeaway.base.RecyclerViewModel;
 import com.kyle.takeaway.entity.Constants;
 import com.kyle.takeaway.entity.OrderItemEntity;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -48,6 +49,7 @@ public class OrderItemViewModel extends RecyclerViewModel {
 
     public OrderItemViewModel(OrderItemEntity orderItemEntity) {
         mOrderItemEntity = orderItemEntity;
+        mOrderId = mOrderItemEntity.getOrder_id();
     }
 
     @Override
@@ -58,7 +60,9 @@ public class OrderItemViewModel extends RecyclerViewModel {
     @Override
     protected void onBindView(BaseViewHolder holder) {
         ButterKnife.bind(this, holder.getConvertView());
-        holder.setText(R.id.tv_name, "店铺");
+        holder.setText(R.id.tv_name, mOrderItemEntity.getStore_name());
+        holder.setText(R.id.tv_status, mOrderItemEntity.getStatus_name());
+        holder.setVisibility(R.id.tv_comment, mOrderItemEntity.getIs_evaluation() == 0 && mOrderItemEntity.getStatus() > 1);
         RecyclerView recyclerView = holder.getView(R.id.recyclerview);
         recyclerView.setLayoutManager(new LinearLayoutManager(holder.getContext()));
         FeaturesAdapter adapter = new FeaturesAdapter(holder.getContext());
@@ -67,7 +71,13 @@ public class OrderItemViewModel extends RecyclerViewModel {
     }
 
     private List<RecyclerViewModel> getViewModels() {
-        return Arrays.asList(new ItemProductViewModel("15", "红烧鱼"), new ItemProductViewModel("16", "红烧茄子"));
+        List<RecyclerViewModel> viewModels = new ArrayList<>();
+        for (int i = 0; i < mOrderItemEntity.getFood_list().size(); i++) {
+            viewModels.add(new ItemProductViewModel(
+                    String.valueOf(mOrderItemEntity.getFood_list().get(i).getPrice()),
+                    String.valueOf(mOrderItemEntity.getFood_list().get(i).getFood_name())));
+        }
+        return viewModels;
     }
 
     @Override

@@ -8,6 +8,7 @@ import com.kyle.takeaway.R;
 import com.kyle.takeaway.RetrofitManager;
 import com.kyle.takeaway.base.BaseActivity;
 import com.kyle.takeaway.base.Functions;
+import com.kyle.takeaway.base.bus.RxBus;
 import com.kyle.takeaway.entity.Constants;
 
 import butterknife.BindView;
@@ -43,6 +44,7 @@ public class AddCommentActivity extends BaseActivity {
         if (edtAddress.getText().length() > 1) {
             RetrofitManager.getInstance().commitComment(mOrderId, edtAddress.getText().toString())
                     .doOnNext(o -> {
+                        RxBus.getDefault().send(true,"order");
                         ToastUtils.showShort("提交成功");
                         setResult(RESULT_OK);
                         finish();

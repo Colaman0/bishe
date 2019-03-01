@@ -4,6 +4,7 @@ import com.kyle.takeaway.entity.AddressEntity;
 import com.kyle.takeaway.entity.BaseResponse;
 import com.kyle.takeaway.entity.CartItemEntity;
 import com.kyle.takeaway.entity.CartParam;
+import com.kyle.takeaway.entity.CommentEntity;
 import com.kyle.takeaway.entity.Constants;
 import com.kyle.takeaway.entity.LoginEntity;
 import com.kyle.takeaway.entity.OrderItemEntity;
@@ -140,7 +141,7 @@ public interface RetrofitService {
     Observable<BaseResponse<PageDTO<OrderItemEntity>>> getOrders(@Query("user_id") int userId, @Query("status") int status,
                                                                  @Query("page") int page, @Query("page_count") int page_count);
 
-    @POST
+    @POST(Constants.POST_COMMENT)
     @FormUrlEncoded
     Observable<BaseResponse<Object>> commitComment(@Field("order_id") int orderId, @Field("user_id") int user_id,
                                                    @Field("content") String content);
@@ -177,4 +178,16 @@ public interface RetrofitService {
     @GET(Constants.STORE_SELL_HISTORY)
     Observable<BaseResponse<List<SellHistoryEntity>>> getSellHistory(@Query("store_id") int id);
 
+
+    @POST(Constants.PRE_COMMIT_ORDER)
+    @FormUrlEncoded
+    Observable<BaseResponse<List<OrderItemEntity>>> preCommitOrder(@Field("user_id") int id, @Field("foods_json") String foods_json);
+
+    @POST(Constants.COMMIT_ORDER)
+    @FormUrlEncoded
+    Observable<BaseResponse<List<OrderItemEntity>>> commitOrder(@Field("user_id") int id, @Field("foods_json") String foods_json, @Field("address_id") int addressId);
+
+
+    @GET(Constants.GET_COMMENTS)
+    Observable<BaseResponse<PageDTO<CommentEntity>>> getComments(@Query("user_id") int id,@Query("page") int page, @Query("page_count") int page_count);
 }

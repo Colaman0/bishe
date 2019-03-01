@@ -17,12 +17,14 @@ import butterknife.ButterKnife;
  * </pre>
  */
 public class ItemCommitOrderProductViewModel extends RecyclerViewModel {
+    private final String mName;
     public int num;
     @BindView(R.id.tv_account)
     TextView tvAccount;
 
-    public ItemCommitOrderProductViewModel(int num) {
+    public ItemCommitOrderProductViewModel(String name, int num) {
         this.num = num;
+        mName = name;
     }
 
     @Override
@@ -34,6 +36,7 @@ public class ItemCommitOrderProductViewModel extends RecyclerViewModel {
     protected void onBindView(BaseViewHolder holder) {
         ButterKnife.bind(this, holder.getConvertView());
         tvAccount.setText(String.valueOf(num));
+        holder.setText(R.id.tv_name, mName);
     }
 
     @Override

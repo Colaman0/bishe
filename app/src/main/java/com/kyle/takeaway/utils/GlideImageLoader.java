@@ -10,6 +10,7 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.FutureTarget;
 import com.bumptech.glide.request.RequestOptions;
+import com.kyle.takeaway.R;
 import com.kyle.takeaway.base.IImageLoad;
 
 import java.net.URL;
@@ -57,6 +58,8 @@ public class GlideImageLoader implements IImageLoad {
      */
     private RequestOptions initDefaultOption() {
         return new RequestOptions()
+                .error(R.mipmap.ic_launcher)
+                .placeholder(R.mipmap.ic_launcher)
                 .centerInside();
     }
 

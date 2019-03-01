@@ -35,8 +35,6 @@ public class SelectAddressActivity extends BaseActivity {
     TitleBar titleBar;
     @BindView(R.id.recyclerview)
     RecyclerView recyclerview;
-    @BindView(R.id.tv_commit)
-    TextView tvCommit;
 
     private boolean isSelect = false;
 
@@ -47,7 +45,7 @@ public class SelectAddressActivity extends BaseActivity {
 
     @Override
     protected int initLayoutRes() {
-        return R.layout.activity_address;
+        return R.layout.activity_select_address;
     }
 
     @Override
