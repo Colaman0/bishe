@@ -2,6 +2,7 @@ package com.kyle.takeaway.activity;
 
 import android.os.Bundle;
 import android.support.v7.widget.AppCompatButton;
+import android.util.Log;
 import android.view.View;
 import android.widget.CheckBox;
 import android.widget.EditText;
@@ -74,6 +75,7 @@ public class LoginActivity extends BaseActivity {
     private void userLogin() {
         RetrofitManager.getInstance().userLogin(edtPhone.getText().toString(), edtCode.getText().toString())
                 .doOnNext(s -> {
+                    Log.d("cola", "second");
                     UserHelper.setUserInfo(true, s.get().getUserId());
                     goToAcitivty(UserHomeActivity.class);
                 })

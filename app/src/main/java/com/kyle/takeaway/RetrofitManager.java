@@ -305,7 +305,12 @@ public class RetrofitManager {
     public Observable<List<CommentEntity>> getComments() {
         return service.getComments(UserHelper.getId(),1,200)
                 .compose(RxResponse.getData())
-                .map(pageDTOOptional -> pageDTOOptional.get().getList())
+                .map(new Function<Optional<PageDTO<CommentEntity>>, List<CommentEntity>>() {
+                    @Override
+                    public List<CommentEntity> apply(Optional<PageDTO<CommentEntity>> pageDTOOptional) throws Exception {
+                        return pageDTOOptional.get().getList();
+                    }
+                })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }

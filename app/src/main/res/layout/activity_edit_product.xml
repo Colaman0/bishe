@@ -40,7 +40,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="请输入新菜名"
-            android:inputType="number"
             android:maxLines="1"
             android:textSize="16sp" />
     </LinearLayout>
@@ -65,7 +64,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="请输入详情"
-            android:inputType="number"
             android:maxLines="1"
             android:textSize="16sp" />
     </LinearLayout>
@@ -90,7 +88,6 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:hint="请输入新价格"
-            android:inputType="number"
             android:maxLines="1"
             android:textSize="16sp" />
     </LinearLayout>
