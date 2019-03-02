@@ -42,10 +42,12 @@ import retrofit2.converter.gson.GsonConverterFactory;
  * Function :
  */
 public class RetrofitManager {
-    private static RetrofitManager mRetrofitManager = new RetrofitManager();
+    public static String BASE_URL = "http://xmy1996.oicp.io:42418";
+
+    private static RetrofitManager mRetrofitManager;
     RetrofitService service;
 
-    private RetrofitManager() {
+    private RetrofitManager(String url) {
 
         HttpLoggingInterceptor loggingInterceptor = new HttpLoggingInterceptor(new HttpLoggingInterceptor.Logger() {
             @Override
@@ -59,7 +61,7 @@ public class RetrofitManager {
                 .build();
         loggingInterceptor.setLevel(HttpLoggingInterceptor.Level.BODY);
         Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(Constants.BASE_URL)
+                .baseUrl(url.length() == 0 ? BASE_URL : url)
                 .addConverterFactory(GsonConverterFactory.create())
                 .addCallAdapterFactory(RxJava2CallAdapterFactory.createWithScheduler(Schedulers.io()))
                 .client(httpClient)
@@ -68,7 +70,17 @@ public class RetrofitManager {
         service = retrofit.create(RetrofitService.class);
     }
 
+    public static RetrofitManager getInstance(String url) {
+        if (mRetrofitManager == null) {
+            mRetrofitManager = new RetrofitManager(url);
+        }
+        return mRetrofitManager;
+    }
+
     public static RetrofitManager getInstance() {
+        if (mRetrofitManager == null) {
+            mRetrofitManager = new RetrofitManager("");
+        }
         return mRetrofitManager;
     }
 
@@ -288,22 +300,22 @@ public class RetrofitManager {
     }
 
     public Observable<List<OrderItemEntity>> preCommitOrder(String json) {
-        return service.preCommitOrder(UserHelper.getId(),json)
+        return service.preCommitOrder(UserHelper.getId(), json)
                 .compose(RxResponse.getData())
                 .map(Optional::get)
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }
 
-    public Observable commitOrder(String json,int addressId) {
-        return service.commitOrder(UserHelper.getId(),json,addressId)
+    public Observable commitOrder(String json, int addressId) {
+        return service.commitOrder(UserHelper.getId(), json, addressId)
                 .compose(RxResponse.getData())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }
 
     public Observable<List<CommentEntity>> getComments() {
-        return service.getComments(UserHelper.getId(),1,200)
+        return service.getComments(UserHelper.getId(), 1, 200)
                 .compose(RxResponse.getData())
                 .map(new Function<Optional<PageDTO<CommentEntity>>, List<CommentEntity>>() {
                     @Override
