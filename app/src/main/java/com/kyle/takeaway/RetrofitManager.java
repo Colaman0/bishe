@@ -269,15 +269,15 @@ public class RetrofitManager {
                 .observeOn(AndroidSchedulers.mainThread());
     }
 
-    public Observable addProduct(int id, String pic, String decs, String price, String name) {
-        return service.addProduct(UserHelper.getmStoreId(), pic, decs, price, name)
+    public Observable addProduct(int id, String pic, String decs, String price, String name,boolean isRecommend) {
+        return service.addProduct(UserHelper.getmStoreId(), pic, decs, price, name,isRecommend ? 1 : 0)
                 .compose(RxResponse.getData())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());
     }
 
-    public Observable editProduct(int id, String pic, String decs, String price, String name) {
-        return service.editProduct(id, pic, decs, price, name)
+    public Observable editProduct(int id, String pic, String decs, String price, String name, boolean isRecommend) {
+        return service.editProduct(id, pic, decs, price, name, isRecommend ? 1 : 0)
                 .compose(RxResponse.getData())
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread());

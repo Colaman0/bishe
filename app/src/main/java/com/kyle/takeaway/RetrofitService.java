@@ -161,12 +161,14 @@ public interface RetrofitService {
     @POST(Constants.ADD_PRODUCT)
     @FormUrlEncoded
     Observable<BaseResponse<Object>> addProduct(@Field("store_id") int id, @Field("pic_urls") String pic,
-                                                @Field("description") String description, @Field("price") String price, @Field("food_name") String food_name);
+                                                @Field("description") String description, @Field("price") String price,
+                                                @Field("food_name") String food_name, @Field("is_recommend") int is_recommend);
 
     @POST(Constants.EDIT_PRODUCT)
     @FormUrlEncoded
     Observable<BaseResponse<Object>> editProduct(@Field("food_id") int id, @Field("pic_urls") String pic,
-                                                 @Field("description") String description, @Field("price") String price, @Field("food_name") String food_name);
+                                                 @Field("description") String description, @Field("price") String price,
+                                                 @Field("food_name") String food_name, @Field("is_recommend") int is_recommend);
 
     @GET(Constants.STORE_ORDERS)
     Observable<BaseResponse<PageDTO<OrderItemEntity>>> getStoreOrders(@Query("store_id") int id, @Query("status") int status,
@@ -189,5 +191,5 @@ public interface RetrofitService {
 
 
     @GET(Constants.GET_COMMENTS)
-    Observable<BaseResponse<PageDTO<CommentEntity>>> getComments(@Query("user_id") int id,@Query("page") int page, @Query("page_count") int page_count);
+    Observable<BaseResponse<PageDTO<CommentEntity>>> getComments(@Query("user_id") int id, @Query("page") int page, @Query("page_count") int page_count);
 }

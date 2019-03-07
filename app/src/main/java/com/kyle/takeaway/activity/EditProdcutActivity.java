@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.AppCompatButton;
 import android.view.View;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 
@@ -26,7 +27,6 @@ import com.zhihu.matisse.MimeType;
 import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
-import io.reactivex.functions.Consumer;
 import io.reactivex.internal.functions.Functions;
 
 /**
@@ -49,6 +49,8 @@ public class EditProdcutActivity extends BaseActivity {
     AppCompatButton btnSave;
     @BindView(R.id.edt_desc)
     EditText edtDesc;
+    @BindView(R.id.checkbox)
+    CheckBox checkbox;
 
     private String photo;
     private boolean isEdit;
@@ -66,11 +68,12 @@ public class EditProdcutActivity extends BaseActivity {
         mId = getIntent().getIntExtra(Constants.DATA, 0);
         mProductEntity = (ProductEntity) getIntent().getSerializableExtra("product");
         if (mProductEntity != null) {
-            mId = mProductEntity.getFood_id();
-            photo = mProductEntity.getCover_url();
+            mId = mProductEntity.getFoodId();
+            photo = mProductEntity.getCoverUrl();
             edtPhone.setText(String.valueOf(mProductEntity.getPrice()));
-            edtShopName.setText(mProductEntity.getFood_name());
+            edtShopName.setText(mProductEntity.getFoodName());
             edtDesc.setText(mProductEntity.getDescription());
+            checkbox.setChecked(mProductEntity.getIsRecommend()==1);
         }
 
         if (isEdit) {
@@ -116,7 +119,7 @@ public class EditProdcutActivity extends BaseActivity {
     }
 
     private void save() {
-        RetrofitManager.getInstance().editProduct(mProductEntity.getFood_id(), photo, edtDesc.getText().toString(), edtPhone.getText().toString(), edtShopName.getText().toString())
+        RetrofitManager.getInstance().editProduct(mProductEntity.getFoodId(), photo, edtDesc.getText().toString(), edtPhone.getText().toString(), edtShopName.getText().toString(),checkbox.isChecked())
                 .doOnNext(o -> {
                     ToastUtils.showShort("编辑成功");
                     RxBus.getDefault().send(true, "refresh");
@@ -125,7 +128,7 @@ public class EditProdcutActivity extends BaseActivity {
     }
 
     private void add() {
-        RetrofitManager.getInstance().addProduct(mId, photo, edtDesc.getText().toString(), edtPhone.getText().toString(), edtShopName.getText().toString())
+        RetrofitManager.getInstance().addProduct(mId, photo, edtDesc.getText().toString(), edtPhone.getText().toString(), edtShopName.getText().toString(),checkbox.isChecked())
                 .doOnNext(o -> {
                     ToastUtils.showShort("添加成功");
                     RxBus.getDefault().send(true, "refresh");

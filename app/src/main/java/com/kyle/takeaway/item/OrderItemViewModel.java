@@ -9,6 +9,7 @@ import android.widget.TextView;
 import com.kyle.takeaway.R;
 import com.kyle.takeaway.activity.AddCommentActivity;
 import com.kyle.takeaway.activity.AddReturnActivity;
+import com.kyle.takeaway.activity.ShopDetailActivity;
 import com.kyle.takeaway.adapter.FeaturesAdapter;
 import com.kyle.takeaway.base.BaseViewHolder;
 import com.kyle.takeaway.base.RecyclerViewModel;
@@ -99,5 +100,13 @@ public class OrderItemViewModel extends RecyclerViewModel {
                 getContext().startActivity(intentReturn);
                 break;
         }
+    }
+
+    @Override
+    public void onItemClick() {
+        super.onItemClick();
+        Intent intent = new Intent(getContext(), ShopDetailActivity.class);
+        intent.putExtra(Constants.DATA, mOrderItemEntity.getStore_id());
+        getContext().startActivity(intent);
     }
 }

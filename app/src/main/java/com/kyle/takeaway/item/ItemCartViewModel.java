@@ -1,5 +1,6 @@
 package com.kyle.takeaway.item;
 
+import android.content.Intent;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -7,11 +8,13 @@ import android.widget.CheckBox;
 import android.widget.TextView;
 
 import com.kyle.takeaway.R;
+import com.kyle.takeaway.activity.ShopDetailActivity;
 import com.kyle.takeaway.adapter.FeaturesAdapter;
 import com.kyle.takeaway.base.BaseViewHolder;
 import com.kyle.takeaway.base.RecyclerViewModel;
 import com.kyle.takeaway.entity.CartItemEntity;
 import com.kyle.takeaway.entity.CommitOrderParam;
+import com.kyle.takeaway.entity.Constants;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -104,7 +107,7 @@ public class ItemCartViewModel extends RecyclerViewModel {
         for (int i = 0; i < datas.size(); i++) {
             account += ((ItemCartProductViewModel) datas.get(i)).getAccount();
         }
-        return account;
+        return account == 0 ? 0 : account + mCartItemEntity.getFoodList().get(0).getShippingFee();
     }
 
     public ItemCartViewModel setDeleteAction(Consumer<ItemCartViewModel> consumer) {
@@ -124,5 +127,13 @@ public class ItemCartViewModel extends RecyclerViewModel {
                     mCartItemEntity.getFoodList().get(i).getNum()));
         }
         return params;
+    }
+
+    @Override
+    public void onItemClick() {
+        super.onItemClick();
+        Intent intent = new Intent(getContext(), ShopDetailActivity.class);
+        intent.putExtra(Constants.DATA, mCartItemEntity.getStoreId());
+        getContext().startActivity(intent);
     }
 }

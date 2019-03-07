@@ -33,10 +33,10 @@ public class ItemMerchantProductViewModel extends RecyclerViewModel {
 
     @Override
     protected void onBindView(BaseViewHolder holder) {
-        holder.setText(R.id.tv_name, mProductEntity.getFood_name());
+        holder.setText(R.id.tv_name, mProductEntity.getFoodName());
         holder.setText(R.id.tv_detail, mProductEntity.getDescription());
         holder.setText(R.id.tv_price, String.valueOf(mProductEntity.getPrice()));
-        holder.loadImage(R.id.iv_headicon, mProductEntity.getCover_url());
+        holder.loadImage(R.id.iv_headicon, mProductEntity.getCoverUrl());
     }
 
     @Override

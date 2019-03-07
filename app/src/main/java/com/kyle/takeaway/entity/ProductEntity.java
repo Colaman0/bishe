@@ -1,5 +1,7 @@
 package com.kyle.takeaway.entity;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.io.Serializable;
 import java.util.List;
 
@@ -11,46 +13,57 @@ import java.util.List;
  * </pre>
  */
 public class ProductEntity implements Serializable {
+
     /**
      * store_id : 1
-     * food_name : 测试
+     * food_name : 雷姆龙龙
      * cover_url : http://xmy1996.oicp.io:42418/upload/temp/2.png
-     * price : 23123.0
-     * description : 123
-     * pic_urls : ["http://xmy1996.oicp.io:42418/upload/temp/2.png","http://xmy1996.oicp.io:42418/upload/temp/2.png"]
+     * price : 10000.0
+     * is_recommend : 0
+     * description : 龙
+     * pic_urls : ["http://xmy1996.oicp.io:42418/upload/temp/2.png"]
      * food_id : 1
      */
 
-    private int store_id;
-    private String food_name;
-    private String cover_url;
+    @SerializedName("store_id")
+    private int storeId;
+    @SerializedName("food_name")
+    private String foodName;
+    @SerializedName("cover_url")
+    private String coverUrl;
+    @SerializedName("price")
     private double price;
+    @SerializedName("is_recommend")
+    private int isRecommend;
+    @SerializedName("description")
     private String description;
-    private int food_id;
-    private List<String> pic_urls;
+    @SerializedName("food_id")
+    private int foodId;
+    @SerializedName("pic_urls")
+    private List<String> picUrls;
 
-    public int getStore_id() {
-        return store_id;
+    public int getStoreId() {
+        return storeId;
     }
 
-    public void setStore_id(int store_id) {
-        this.store_id = store_id;
+    public void setStoreId(int storeId) {
+        this.storeId = storeId;
     }
 
-    public String getFood_name() {
-        return food_name;
+    public String getFoodName() {
+        return foodName;
     }
 
-    public void setFood_name(String food_name) {
-        this.food_name = food_name;
+    public void setFoodName(String foodName) {
+        this.foodName = foodName;
     }
 
-    public String getCover_url() {
-        return cover_url;
+    public String getCoverUrl() {
+        return coverUrl;
     }
 
-    public void setCover_url(String cover_url) {
-        this.cover_url = cover_url;
+    public void setCoverUrl(String coverUrl) {
+        this.coverUrl = coverUrl;
     }
 
     public double getPrice() {
@@ -61,6 +74,14 @@ public class ProductEntity implements Serializable {
         this.price = price;
     }
 
+    public int getIsRecommend() {
+        return isRecommend;
+    }
+
+    public void setIsRecommend(int isRecommend) {
+        this.isRecommend = isRecommend;
+    }
+
     public String getDescription() {
         return description;
     }
@@ -69,19 +90,19 @@ public class ProductEntity implements Serializable {
         this.description = description;
     }
 
-    public int getFood_id() {
-        return food_id;
+    public int getFoodId() {
+        return foodId;
     }
 
-    public void setFood_id(int food_id) {
-        this.food_id = food_id;
+    public void setFoodId(int foodId) {
+        this.foodId = foodId;
     }
 
-    public List<String> getPic_urls() {
-        return pic_urls;
+    public List<String> getPicUrls() {
+        return picUrls;
     }
 
-    public void setPic_urls(List<String> pic_urls) {
-        this.pic_urls = pic_urls;
+    public void setPicUrls(List<String> picUrls) {
+        this.picUrls = picUrls;
     }
 }

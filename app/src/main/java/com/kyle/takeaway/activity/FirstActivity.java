@@ -6,6 +6,11 @@ import com.kyle.takeaway.base.BaseActivity;
 
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.concurrent.TimeUnit;
+
+import io.reactivex.Observable;
+import io.reactivex.functions.Consumer;
+import io.reactivex.internal.functions.Functions;
 
 /**
  * <pre>
@@ -23,12 +28,12 @@ public class FirstActivity extends BaseActivity {
     @Override
     protected void initView() {
         ScreenUtils.setFullScreen(this);
-        TimerTask timerTask = new TimerTask() {
-            @Override
-            public void run() {
-                goToAcitivty(UserHomeActivity.class);
-            }
-        };
-        new Timer().schedule(timerTask, 2*1000 );
+        Observable.interval(2, TimeUnit.SECONDS)
+                .take(1)
+                .doOnNext(aLong -> {
+                    goToAcitivty(UrlActivity.class);
+                    finish();
+                })
+                .subscribe(Functions.emptyConsumer());
     }
 }
